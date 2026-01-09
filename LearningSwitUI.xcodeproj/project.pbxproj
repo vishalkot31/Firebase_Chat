@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C0D327AB2F0FDF4800D77707 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C0D327AA2F0FDF4800D77707 /* FirebaseAuth */; };
+		C0D327AD2F0FDF4800D77707 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = C0D327AC2F0FDF4800D77707 /* FirebaseCore */; };
+		C0D327AF2F0FDF4800D77707 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C0D327AE2F0FDF4800D77707 /* FirebaseFirestore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearningSwitUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +29,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0D327AD2F0FDF4800D77707 /* FirebaseCore in Frameworks */,
+				C0D327AB2F0FDF4800D77707 /* FirebaseAuth in Frameworks */,
+				C0D327AF2F0FDF4800D77707 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +74,9 @@
 			);
 			name = LearningSwitUI;
 			packageProductDependencies = (
+				C0D327AA2F0FDF4800D77707 /* FirebaseAuth */,
+				C0D327AC2F0FDF4800D77707 /* FirebaseCore */,
+				C0D327AE2F0FDF4800D77707 /* FirebaseFirestore */,
 			);
 			productName = LearningSwitUI;
 			productReference = C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */;
@@ -94,6 +106,9 @@
 			);
 			mainGroup = C0B89C5D2F07CA9A007CC5C4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C0B89C672F07CA9A007CC5C4 /* Products */;
 			projectDirPath = "";
@@ -328,6 +343,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C0D327AA2F0FDF4800D77707 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		C0D327AC2F0FDF4800D77707 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		C0D327AE2F0FDF4800D77707 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C0B89C5E2F07CA9A007CC5C4 /* Project object */;
 }
