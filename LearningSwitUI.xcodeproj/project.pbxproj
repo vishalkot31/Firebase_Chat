@@ -12,14 +12,30 @@
 		C0D327AF2F0FDF4800D77707 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C0D327AE2F0FDF4800D77707 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		C0C03F7A2F15418200AB2102 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0B89C5E2F07CA9A007CC5C4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0B89C652F07CA9A007CC5C4;
+			remoteInfo = LearningSwitUI;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearningSwitUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0C03F762F15418200AB2102 /* LearningSwitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LearningSwitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C0B89C682F07CA9A007CC5C4 /* LearningSwitUI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = LearningSwitUI;
+			sourceTree = "<group>";
+		};
+		C0C03F772F15418200AB2102 /* LearningSwitUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LearningSwitUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -35,6 +51,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0C03F732F15418200AB2102 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -42,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				C0B89C682F07CA9A007CC5C4 /* LearningSwitUI */,
+				C0C03F772F15418200AB2102 /* LearningSwitUITests */,
 				C0B89C672F07CA9A007CC5C4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -50,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */,
+				C0C03F762F15418200AB2102 /* LearningSwitUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -82,6 +107,29 @@
 			productReference = C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C0C03F752F15418200AB2102 /* LearningSwitUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0C03F7E2F15418200AB2102 /* Build configuration list for PBXNativeTarget "LearningSwitUITests" */;
+			buildPhases = (
+				C0C03F722F15418200AB2102 /* Sources */,
+				C0C03F732F15418200AB2102 /* Frameworks */,
+				C0C03F742F15418200AB2102 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0C03F7B2F15418200AB2102 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				C0C03F772F15418200AB2102 /* LearningSwitUITests */,
+			);
+			name = LearningSwitUITests;
+			packageProductDependencies = (
+			);
+			productName = LearningSwitUITests;
+			productReference = C0C03F762F15418200AB2102 /* LearningSwitUITests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -94,6 +142,10 @@
 				TargetAttributes = {
 					C0B89C652F07CA9A007CC5C4 = {
 						CreatedOnToolsVersion = 26.2;
+					};
+					C0C03F752F15418200AB2102 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = C0B89C652F07CA9A007CC5C4;
 					};
 				};
 			};
@@ -115,12 +167,20 @@
 			projectRoot = "";
 			targets = (
 				C0B89C652F07CA9A007CC5C4 /* LearningSwitUI */,
+				C0C03F752F15418200AB2102 /* LearningSwitUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C0B89C642F07CA9A007CC5C4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0C03F742F15418200AB2102 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -137,7 +197,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0C03F722F15418200AB2102 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C0C03F7B2F15418200AB2102 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0B89C652F07CA9A007CC5C4 /* LearningSwitUI */;
+			targetProxy = C0C03F7A2F15418200AB2102 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C0B89C6F2F07CA9C007CC5C4 /* Debug */ = {
@@ -321,6 +396,46 @@
 			};
 			name = Release;
 		};
+		C0C03F7C2F15418200AB2102 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LearningSwitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LearningSwitUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LearningSwitUI";
+			};
+			name = Debug;
+		};
+		C0C03F7D2F15418200AB2102 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.LearningSwitUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LearningSwitUI.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LearningSwitUI";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -338,6 +453,15 @@
 			buildConfigurations = (
 				C0B89C722F07CA9C007CC5C4 /* Debug */,
 				C0B89C732F07CA9C007CC5C4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0C03F7E2F15418200AB2102 /* Build configuration list for PBXNativeTarget "LearningSwitUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0C03F7C2F15418200AB2102 /* Debug */,
+				C0C03F7D2F15418200AB2102 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

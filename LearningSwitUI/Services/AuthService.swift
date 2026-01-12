@@ -59,7 +59,7 @@ final class FireBaseAuthService:AuthServiceProtocol{
             else if let user = result?.user{
                 let userModel = UserModel(id: user.uid,email: user.email ?? "",displayName: "User \(user.uid.prefix(5))")
                 
-                user.getIDToken()
+    
                 // Save user info to Firestore
                 do {
                     try self.db.collection("users").document(user.uid).setData(from: userModel, merge: true) { error in

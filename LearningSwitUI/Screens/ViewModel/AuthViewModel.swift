@@ -20,12 +20,18 @@ final class AuthViewModel{
         ValidationUtils.isValidEmail(email) && !password.isEmpty
     }
     
+    //Dependency injection
+    var authService:AuthServiceProtocol
+    init (authService:AuthServiceProtocol = FireBaseAuthService.shared){
+        self.authService =  authService
+    }
+    
     //User Login
     @MainActor
     func login(router:Router,session:UserSession){
         isLoading = true
         errorMessage = nil
-        FireBaseAuthService.shared
+        authService
             .login(email: email, password: password) { [weak self] result in
                 DispatchQueue.main.async{
                     self?.isLoading = false
