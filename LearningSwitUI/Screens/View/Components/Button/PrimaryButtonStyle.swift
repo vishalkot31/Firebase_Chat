@@ -37,7 +37,7 @@ struct CustomButton:View {
                 Text(title)
             }
         }
-        .padding(.vertical,8)
+        .padding(.vertical,5)
     }
 }
 

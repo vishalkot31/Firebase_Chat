@@ -6,25 +6,44 @@
 //
 
 import SwiftUI
+import Observation
 
 struct CreateAccountView: View {
     
     @State private var email = ""
+    @Environment(Router.self) var router
+    
+    @State private var viewMdoel = CreateAccountVM()
     var body: some View {
-            VStack(spacing:20) {
+            VStack(spacing:10) {
                 AppImage(source:.asset("AppLogo"),width: 150)
                     .padding()
                 Text("SignIn")
-                    .padding(.top,20)
+                    .padding(.top,10)
                 CustomTextFiled(
                     textTitle: "Email",
                     placeHolder: "Eneter Your Email",
-                    text: $email
+                    text: $viewMdoel.email
                 )
-                CustomButton(title: "Next", appIocn: nil) {
-                    //Logic
+                CustomTextFiled(
+                    textTitle: "Password",
+                    placeHolder: "Enter Your Password",
+                    securePwd: true, image: "ShowPassord", text: $viewMdoel.password)
+                CustomButton(title: "Register", appIocn: nil) {
+                    Task{
+                        await viewMdoel.register(router: router)
+                    }
+                   
                 }.buttonStyle(PrimaryButtonStyle())
-                
+                    .disabled(!viewMdoel.isFormValid)
+                    .opacity(viewMdoel.isFormValid ? 1 : 0.5)
+                if viewMdoel.isLoading {
+                    ProgressView()
+                }
+                if let error = viewMdoel.errorMessage {
+                    Text(error)
+                    .foregroundStyle(.red)
+                }
                 onDivide(text: "Or")
                 
                 CustomButton(title: "Continue with Apple", appIocn: "apple.logo") {
@@ -48,24 +67,18 @@ struct CreateAccountView: View {
                     .frame(maxWidth: .infinity)
                     .foregroundStyle(.black)
                     .capsuleBorder(color: .black)
-                    
-                    
-                
-                NavigationLink {
-                    SignInView()
-                } label: {
-                    Text("Already have a Account? Sign In")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .padding()
-                        .foregroundStyle(Color.gray)
-                }
+                Button("Already have a Account? Sign In"){
+                    router.moveToRootScreen()
+                }.font(.title3)
+                    .fontWeight(.bold)
+                    .padding()
+                    .foregroundStyle(Color.gray)
                 
             }.padding()
-                .navigationBarBackButtonHidden()//Hide navigation abck button
+                .navigationBarBackButtonHidden()//Hide navigation //abck button
     }
 }
 
 #Preview {
-    CreateAccountView()
+    CreateAccountView().environment(Router())
 }

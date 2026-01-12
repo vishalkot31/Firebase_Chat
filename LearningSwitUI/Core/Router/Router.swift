@@ -7,10 +7,16 @@
 
 import Foundation
 import SwiftUI
+import Observation
 
 public enum AuthFlow:Hashable{
     case createAccount
     case forgetPassord
+}
+
+//After login
+enum AppFlow: Hashable {
+    case home
 }
 
 @Observable
@@ -27,6 +33,16 @@ class Router{
     }
     
     func moveToRootScreen(){
+        path.removeLast(path.count)
+    }
+    // MARK: - Login Succes
+
+    func loginSuccess() {
+        path.removeLast(path.count)   // clear auth flow
+        path.append(AppFlow.home)  // go to profile
+    }
+    
+    func logout(){
         path.removeLast(path.count)
     }
 }

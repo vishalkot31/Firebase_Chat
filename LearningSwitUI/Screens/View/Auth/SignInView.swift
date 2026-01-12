@@ -10,32 +10,51 @@ import SwiftUI
 struct SignInView: View {
     @State private var email = ""
     @State private var pwd = ""
+    
     @Environment(Router.self) private var router
+    @Environment(UserSession.self) private var session
+    
+    @State private var viewModel = AuthViewModel()
+    private var isFormValid:Bool{
+        !email.isEmpty && !pwd.isEmpty
+    }
     var body: some View {
             ScrollView {
-                VStack(spacing:20) {
+                VStack(spacing:10) {
                     AppImage(source:.asset("AppLogo"),width: 150)
-                        .padding(.top,60)
+                        .padding(.top,40)
                     Text("SignIn")
-                        .padding(.top,20)
+                        .padding(.top,10)
                     CustomTextFiled(
                         textTitle: "Email",
                         placeHolder: "Enter Your Email",
-                        securePwd: false, text: $email)
+                        securePwd: false, text: $viewModel.email)
                     CustomTextFiled(
                         textTitle: "Password",
                         placeHolder: "Enter Your Password",
-                        securePwd: true, image: "ShowPassord", text: $pwd)
-                    
+                        securePwd: true, image: "ShowPassord", text: $viewModel.password)
                     HStack{
                         Spacer()
                         CustomButton(title: "Forgot Passord ?", appIocn: nil) {
                             router.push(destination: .forgetPassord)
                         }
                     }
-                    CustomButton(title: "Next", appIocn: nil) {
+                    CustomButton(title: "Login", appIocn: nil) {
+                        //Login Logic
+                        viewModel.login(router: router, session: session)
+                        
                     }
                     .buttonStyle(PrimaryButtonStyle())
+                    .disabled(!viewModel.isFormvalid)
+                    .opacity(viewModel.isFormvalid ? 1 : 0.5)
+                    
+                    if viewModel.isLoading {
+                        ProgressView()
+                    }
+                    if let error = viewModel.errorMessage {
+                        Text(error)
+                        .foregroundStyle(.red)
+                    }
                     
                     onDivide(text: "Or")
                     
@@ -77,7 +96,7 @@ struct SignInView: View {
 
 
 #Preview {
-    SignInView().environment(Router())
+    SignInView().environment(Router()).environment(UserSession())
 }
 
 
