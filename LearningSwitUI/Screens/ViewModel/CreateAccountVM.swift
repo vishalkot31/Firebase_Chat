@@ -27,7 +27,7 @@ final class CreateAccountVM {
             isLoading = false // always reset loading state
         }
         do {
-            try await FireBaseAuthService.shared.registerAsync(email: email, password: password)
+            let user = try await FireBaseAuthService.shared.registerAsync(email: email, password: password)
             router.loginSuccess()
         }
         catch{

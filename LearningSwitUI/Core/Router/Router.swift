@@ -17,6 +17,8 @@ public enum AuthFlow:Hashable{
 //After login
 enum AppFlow: Hashable {
     case home
+    case UserList
+    case userDetail(id:Int)
 }
 
 @Observable
@@ -44,5 +46,9 @@ class Router{
     
     func logout(){
         path.removeLast(path.count)
+    }
+    
+    func pushApp(destination:AppFlow){
+        path.append(destination)
     }
 }

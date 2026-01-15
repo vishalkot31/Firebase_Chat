@@ -23,7 +23,7 @@ struct CreateAccountView: View {
                 CustomTextFiled(
                     textTitle: "Email",
                     placeHolder: "Eneter Your Email",
-                    text: $viewMdoel.email
+                    leftImage: "Email", text: $viewMdoel.email
                 )
                 CustomTextFiled(
                     textTitle: "Password",
@@ -52,21 +52,24 @@ struct CreateAccountView: View {
                 .foregroundStyle(.black)
                 .capsuleBorder(color: .gray)
                 
-                CustomButton(title: "Continue with Google", appIocn: "Google.logo") {
+                CustomButton(
+                    title: "Continue with Google",
+                    appIocn: "google",
+                    type: false
+                ) {
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundStyle(.black)
                 .capsuleBorder(color: .black)
                
-                
-                CustomButton(
-                    title: "Continue with Facebook",
-                    appIocn: "Fb", type : false){
+                CustomButton(title: "Continue with Facebook",
+                            appIocn: "Fb", type : false){
                         //Action
                     }
                     .frame(maxWidth: .infinity)
                     .foregroundStyle(.black)
                     .capsuleBorder(color: .black)
+                //
                 Button("Already have a Account? Sign In"){
                     router.moveToRootScreen()
                 }.font(.title3)

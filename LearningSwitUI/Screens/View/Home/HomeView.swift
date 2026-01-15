@@ -28,7 +28,9 @@ struct HomeView: View {
                     }
 
                     Spacer()
-
+            Button("Next") {
+                router.push(destination: .UserList)
+            }
                     // Logout Button
                     Button(role: .destructive) {
                         vm.logout(session: session, router: router)

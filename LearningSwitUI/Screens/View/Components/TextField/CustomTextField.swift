@@ -15,10 +15,13 @@ struct CustomTextFiled:View {
     let placeHolder:String
     var securePwd = false
     var image = ""
+    var leftImage:String?
     //for binding textfield
     @Binding var text:String
     //Toggle to show passord or not
     @State private var isPasswordVisible = false
+    //focus
+    @FocusState private var isViewFocused:Bool
     
     var body: some View {
         //Show text on top
@@ -29,15 +32,22 @@ struct CustomTextFiled:View {
                 Spacer()
             }
             
-            HStack{
+            HStack(spacing:10){
                 Group{
+                    //Left Image
+                    if let image = leftImage{
+                        AppImage(source: .asset(image),width: 20,height: 20)
+                    }
                     //If this is true show secure textfiled
                     if securePwd && !isPasswordVisible{
                         SecureField(placeHolder, text:$text)
-                        }
+                            .focused($isViewFocused)
+                    }
                     //else show normal textfield
                     else{
                         TextField(placeHolder, text: $text)
+                            .focused($isViewFocused)
+                        
                     }
                 }
                 
@@ -54,15 +64,13 @@ struct CustomTextFiled:View {
                             height: 30
                         )
                     }
-
                 }
 
             }
-           
             .padding()
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.gray,lineWidth: 1)
+                    .stroke(isViewFocused ?Color.red : Color.gray,lineWidth: 1)
             }
         }
     }

@@ -12,17 +12,27 @@ import Observation
 //Checkimg
 
 struct ContentView: View {
+    @AppStorage("hasSeenGetStarted") private var hasSeenGetStarted: Bool = false
     @State private var router = Router()
     @State private var userModel = UserSession()
     var body: some View {
         NavigationStack(path:$router.path){
-            SignInView()
-                .navigationDestination(for: AuthFlow.self) { route in
-                    destinationView(for: route)
+            ZStack {
+                SignInView()
+                    .navigationDestination(for: AuthFlow.self) { route in
+                        destinationView(for: route)
+                    }
+                    .navigationDestination(for: AppFlow.self) { route in
+                        appDestinationView(for: route)
+                    }
+                
+                if !hasSeenGetStarted{
+                    GetStartedView{
+                        hasSeenGetStarted = true
+                        router.moveToRootScreen()
+                    }
                 }
-                .navigationDestination(for: AppFlow.self) { route in
-                    appDestinationView(for: route)
-                }
+            }.animation(.easeInOut, value: hasSeenGetStarted)
         }.environment(router)
             .environment(userModel)
     }
@@ -44,6 +54,10 @@ func appDestinationView(for route: AppFlow) -> some View {
     switch route {
     case .home:
         HomeView()
+    case .UserList:
+        UserListing()
+    case .userDetail(id: let id):
+        UserDetailView(userId: id)
     }
 }
 

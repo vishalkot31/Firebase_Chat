@@ -28,12 +28,18 @@ struct SignInView: View {
                     CustomTextFiled(
                         textTitle: "Email",
                         placeHolder: "Enter Your Email",
-                        securePwd: false, text: $viewModel.email)
+                        securePwd: false, leftImage: "Email", text: $viewModel.email)
                     CustomTextFiled(
                         textTitle: "Password",
                         placeHolder: "Enter Your Password",
-                        securePwd: true, image: "ShowPassord", text: $viewModel.password)
+                        securePwd: true, image: "ShowPassord", leftImage: "password", text: $viewModel.password)
                     HStack{
+                        RoundedRectangle(cornerRadius: 4)
+                            .stroke(Color.gray,lineWidth: 1)
+                            .frame(width: 20,height: 20)
+                        HStack{
+                            Text("Keep me sign In")
+                        }
                         Spacer()
                         CustomButton(title: "Forgot Passord ?", appIocn: nil) {
                             router.push(destination: .forgetPassord)
@@ -64,15 +70,17 @@ struct SignInView: View {
                     .foregroundStyle(.black)
                     .capsuleBorder(color: .gray)
                     
-                    CustomButton(title: "Continue with Google", appIocn: "Google.logo") {
+                    CustomButton(
+                        title: "Continue with Google",
+                        appIocn: "google",
+                        type: false
+                    ) {
                     }
                     .frame(maxWidth: .infinity)
                     .foregroundStyle(.black)
                     .capsuleBorder(color: .black)
                     
-                    CustomButton(
-                        title: "Continue with Facebook",
-                        appIocn: "Fb", type : false){
+                    CustomButton(title: "Continue with Facebook",appIocn: "Fb", type : false){
                             //Action
                         }
                         .frame(maxWidth: .infinity)

@@ -31,8 +31,7 @@ final class AuthViewModel{
     func login(router:Router,session:UserSession){
         isLoading = true
         errorMessage = nil
-        authService
-            .login(email: email, password: password) { [weak self] result in
+        authService.login(email: email, password: password) { [weak self] result in
                 DispatchQueue.main.async{
                     self?.isLoading = false
                     switch result{

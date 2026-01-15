@@ -14,16 +14,10 @@ import Combine
 protocol AuthServiceProtocol {
     //Async and wait
     var currentUser: User? { get }
-    func login(
-        email: String,
-        password: String,
-        completion: @escaping (
-            Result<UserModel, Error>
-        ) -> Void
-    )
+    func login(email: String,password: String,completion: @escaping (Result<UserModel, Error>) -> Void)
     func registerAsync(email: String, password: String) async throws -> User
     func forgetPassordPublisher(email: String) ->AnyPublisher<Void,Error>
-       func logout() throws
+    func logout() throws
     
 //    //combine Version
 //    
@@ -45,20 +39,14 @@ final class FireBaseAuthService:AuthServiceProtocol{
         Auth.auth().currentUser
     }
     
-    
     //Login time
-    func login(
-        email: String,
-        password: String,
-        completion: @escaping (Result<UserModel, any Error>) -> Void
-    ) {
+    func login(email: String,password: String,completion: @escaping (Result<UserModel, any Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password){result,error in
             if let error = error{
                 completion(.failure(error))
             }
             else if let user = result?.user{
                 let userModel = UserModel(id: user.uid,email: user.email ?? "",displayName: "User \(user.uid.prefix(5))")
-                
     
                 // Save user info to Firestore
                 do {
@@ -76,7 +64,7 @@ final class FireBaseAuthService:AuthServiceProtocol{
         }
     }
     
-    //with try and await
+    //with try and await Register user
     func registerAsync(email: String, password: String) async throws -> User {
         try await Auth.auth().createUser(withEmail: email, password: password).user
     }
@@ -101,4 +89,26 @@ final class FireBaseAuthService:AuthServiceProtocol{
         try Auth.auth().signOut()
     }
     
+}
+
+
+protocol APIServiceProtocol{
+    func ftechUsers() async throws->[UserList]
+}
+
+
+class ApiService:APIServiceProtocol{
+    func ftechUsers() async throws -> [UserList] {
+        guard let url = URL(
+            string: "https://jsonplaceholder.typicode.com/users") else{
+            throw URLError(.badURL)
+            }
+       let (data,response) = try await URLSession.shared.data(from: url)
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else{
+            throw URLError(.badServerResponse)
+        }
+        
+        return try JSONDecoder().decode([UserList].self, from: data)
+    }
 }

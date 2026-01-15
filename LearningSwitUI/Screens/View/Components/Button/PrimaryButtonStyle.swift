@@ -33,6 +33,7 @@ struct CustomButton:View {
             HStack(spacing:20){
                 if let icon = appIocn{
                     AppImage(source: type ? .System(icon) : .asset(icon))
+                        .frame(width: 25)
                 }
                 Text(title)
             }

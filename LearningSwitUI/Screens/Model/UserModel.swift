@@ -15,3 +15,10 @@ struct UserModel:Codable,Identifiable{
     var profileImageURL: String? = nil  // Optional profile picture URL
     var createdAt: Date = Date()
 }
+
+
+struct UserList:Codable,Identifiable{
+    let id:Int
+    let name:String
+    let email:String
+}
