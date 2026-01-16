@@ -15,9 +15,6 @@ struct SignInView: View {
     @Environment(UserSession.self) private var session
     
     @State private var viewModel = AuthViewModel()
-    private var isFormValid:Bool{
-        !email.isEmpty && !pwd.isEmpty
-    }
     var body: some View {
             ScrollView {
                 VStack(spacing:10) {
@@ -28,17 +25,17 @@ struct SignInView: View {
                     CustomTextFiled(
                         textTitle: "Email",
                         placeHolder: "Enter Your Email",
-                        securePwd: false, leftImage: "Email", text: $viewModel.email)
+                        typeTextFiled: .email, leftImage: "Email", text: $viewModel.email)
                     CustomTextFiled(
                         textTitle: "Password",
                         placeHolder: "Enter Your Password",
-                        securePwd: true, image: "ShowPassord", leftImage: "password", text: $viewModel.password)
+                        typeTextFiled: .passsowrd, image: "ShowPassord", leftImage: "password", text: $viewModel.password)
                     HStack{
                         RoundedRectangle(cornerRadius: 4)
                             .stroke(Color.gray,lineWidth: 1)
                             .frame(width: 20,height: 20)
                         HStack{
-                            Text("Keep me sign In")
+                            Text(!viewModel.isFormvalid ? "Keep me signed In" :"Remember me")
                         }
                         Spacer()
                         CustomButton(title: "Forgot Passord ?", appIocn: nil) {
@@ -97,8 +94,6 @@ struct SignInView: View {
                 }
                 .padding(.horizontal,20)
             }.navigationBarBackButtonHidden()
-        
-        
     }
 }
 

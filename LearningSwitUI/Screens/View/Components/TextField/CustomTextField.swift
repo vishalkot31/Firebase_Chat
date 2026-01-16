@@ -8,13 +8,20 @@
 import Foundation
 import SwiftUI
 
+enum TextFieldType {
+    case email
+    case passsowrd
+    case extra
+}
 
 //Custom Textfield
 struct CustomTextFiled:View {
+   
     let textTitle : String
     let placeHolder:String
-    var securePwd = false
+    var typeTextFiled:TextFieldType = .extra
     var image = ""
+    
     var leftImage:String?
     //for binding textfield
     @Binding var text:String
@@ -39,7 +46,7 @@ struct CustomTextFiled:View {
                         AppImage(source: .asset(image),width: 20,height: 20)
                     }
                     //If this is true show secure textfiled
-                    if securePwd && !isPasswordVisible{
+                    if typeTextFiled == .passsowrd && !isPasswordVisible{
                         SecureField(placeHolder, text:$text)
                             .focused($isViewFocused)
                     }
@@ -49,23 +56,10 @@ struct CustomTextFiled:View {
                             .focused($isViewFocused)
                         
                     }
+                    //Call right side view
+                    rightSideView()
                 }
                 
-                //To show eye button
-                
-                if securePwd {
-                    Button {
-                        isPasswordVisible.toggle()
-                        //toggle
-                    } label: {
-                        AppImage(
-                            source: .System(isPasswordVisible ? "eye" : "eye.slash"),
-                            width: 30,
-                            height: 30
-                        )
-                    }
-                }
-
             }
             .padding()
             .overlay {
@@ -74,4 +68,23 @@ struct CustomTextFiled:View {
             }
         }
     }
+    
+
+        //To show eye button and toggle
+    @ViewBuilder func rightSideView()->some View{
+        if typeTextFiled == .passsowrd {
+            Button {
+                isPasswordVisible.toggle()
+                    //toggle
+            } label: {
+                AppImage(source: .System(isPasswordVisible ? "eye" : "eye.slash"),
+                    width: 30,height: 30)
+            }
+        }
+        else if typeTextFiled == .email && ValidationUtils.isValidEmail(text){
+            AppImage(source: .asset("CheckMark"),width: 20,height: 20)
+        }
+    }
+       
+       
 }

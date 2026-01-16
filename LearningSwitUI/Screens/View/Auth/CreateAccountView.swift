@@ -28,7 +28,7 @@ struct CreateAccountView: View {
                 CustomTextFiled(
                     textTitle: "Password",
                     placeHolder: "Enter Your Password",
-                    securePwd: true, image: "ShowPassord", text: $viewMdoel.password)
+                    typeTextFiled: .passsowrd, image: "ShowPassord", text: $viewMdoel.password)
                 CustomButton(title: "Register", appIocn: nil) {
                     Task{
                         await viewMdoel.register(router: router)

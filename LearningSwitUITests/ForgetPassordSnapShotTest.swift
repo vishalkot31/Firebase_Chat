@@ -1,19 +1,21 @@
 //
-//  AuthViewModelTests.swift
+//  ForgetPassordSnapShotTest.swift
 //  LearningSwitUITests
 //
-//  Created by Vishal Kothari on 12/01/26.
+//  Created by Vishal Kothari on 16/01/26.
 //
 
 import XCTest
-import Firebase
+import SnapshotTesting
 @testable import LearningSwitUI
-final class AuthViewModelTests: XCTestCase {
-    var viewModel:AuthViewModel!
+import SwiftUI
+
+final class ForgetPassordSnapShotTest: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-      //  viewModel = AuthViewModel(authService: <#T##any AuthServiceProtocol#>)
+        isRecording = true
+        
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
 
@@ -36,31 +38,9 @@ final class AuthViewModelTests: XCTestCase {
         }
     }
 
-}
-
-
-protocol Router{
-    func loginSuccess()
-}
-
-class MockRouter:Router{
-    var loginCalled = false
-    func loginSuccess() {
-        loginCalled = true
-    }
-    
-}
-
-
-protocol Session{
-    func setUser(model:UserModel)
-}
-
-class MockSession:Session {
-    var model:UserModel?
-    func setUser(model:UserModel) {
-        self.model = model//Track what was test
+    func test_my_Viewsnpshot(){
+        let myview = ForgetPwd()
+            .frame(width: 375,height:812)
+        assertSnapshot(of: myview, as: .image)
     }
 }
-
-

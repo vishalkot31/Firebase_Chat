@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C02CFFC12F1A1E99001D8709 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = C02CFFC02F1A1E99001D8709 /* SnapshotTesting */; };
 		C0D327AB2F0FDF4800D77707 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C0D327AA2F0FDF4800D77707 /* FirebaseAuth */; };
 		C0D327AD2F0FDF4800D77707 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = C0D327AC2F0FDF4800D77707 /* FirebaseCore */; };
 		C0D327AF2F0FDF4800D77707 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = C0D327AE2F0FDF4800D77707 /* FirebaseFirestore */; };
@@ -55,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C02CFFC12F1A1E99001D8709 /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +127,7 @@
 			);
 			name = LearningSwitUITests;
 			packageProductDependencies = (
+				C02CFFC02F1A1E99001D8709 /* SnapshotTesting */,
 			);
 			productName = LearningSwitUITests;
 			productReference = C0C03F762F15418200AB2102 /* LearningSwitUITests.xctest */;
@@ -160,6 +163,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C02CFFBF2F1A1E99001D8709 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C0B89C672F07CA9A007CC5C4 /* Products */;
@@ -469,6 +473,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C02CFFBF2F1A1E99001D8709 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.18.7;
+			};
+		};
 		C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -480,6 +492,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C02CFFC02F1A1E99001D8709 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C02CFFBF2F1A1E99001D8709 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
 		C0D327AA2F0FDF4800D77707 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C0D327A92F0FDF4800D77707 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

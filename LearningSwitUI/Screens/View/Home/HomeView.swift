@@ -29,7 +29,7 @@ struct HomeView: View {
 
                     Spacer()
             Button("Next") {
-                router.push(destination: .UserList)
+                router.pushApp(destination: .UserList)
             }
                     // Logout Button
                     Button(role: .destructive) {
