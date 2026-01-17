@@ -15,7 +15,7 @@ protocol AuthServiceProtocol {
     //Async and wait
     var currentUser: User? { get }
     func login(email: String,password: String,completion: @escaping (Result<UserModel, Error>) -> Void)
-    func registerAsync(email: String, password: String) async throws -> User
+    func registerAsync(email: String, password: String) async throws -> UserModel
     func forgetPassordPublisher(email: String) ->AnyPublisher<Void,Error>
     func logout() throws
     
@@ -46,6 +46,7 @@ final class FireBaseAuthService:AuthServiceProtocol{
                 completion(.failure(error))
             }
             else if let user = result?.user{
+                //Create user model
                 let userModel = UserModel(id: user.uid,email: user.email ?? "",displayName: "User \(user.uid.prefix(5))")
     
                 // Save user info to Firestore
@@ -65,8 +66,19 @@ final class FireBaseAuthService:AuthServiceProtocol{
     }
     
     //with try and await Register user
-    func registerAsync(email: String, password: String) async throws -> User {
-        try await Auth.auth().createUser(withEmail: email, password: password).user
+    @discardableResult  func registerAsync(email: String, password: String) async throws -> UserModel {
+        let userResult = try await Auth.auth().createUser(withEmail: email, password: password)
+        let fireBaseUser = userResult.user
+        //Prepare user Model
+        
+        let UserModel = UserModel(id: fireBaseUser.uid,email: fireBaseUser.email ?? "",displayName: "User \(fireBaseUser.uid.prefix(5))")
+        
+        //Save usermodel into database
+        
+        try await db.collection("users").document(fireBaseUser.uid).setData(from: UserModel,merge: true)
+        //return user model
+        return UserModel
+        
     }
 
     //Forget Passord
