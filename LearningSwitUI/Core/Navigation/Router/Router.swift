@@ -5,53 +5,49 @@
 //  Created by Vishal Kothari on 08/01/26.
 //
 
+//Router class handle in app navigation
+
 import Foundation
 import SwiftUI
 import Observation
 
-//Auth Screen
-public enum AuthFlow:Hashable{
+//Auth Screen flow
+public enum AppAuthFlow:Hashable{
     case createAccount
     case forgetPassord
 }
 
-//After login Route app
-enum AppRoute: Hashable {
-    case home
+//After login Route Screen Flow
+enum AppRouteFlow: Hashable {
+    case userProfile
     case UserList
-    case userDetail(id:Int)
+    case userDetail(id:String)
     case completeProfile
     case chatList
+    case chatView(otherUserModel:UserModel)
 }
 
 @Observable
 class Router{
     //This is navigation stack
     var path = NavigationPath()
+    
     //type of elements path will stor
-    func push(destination:AuthFlow){
+    func push(destination:AppAuthFlow){
+        path.append(destination)
+    }
+    
+    //This is for after user is login and then move
+    func pushApp(destination:AppRouteFlow){
         path.append(destination)
     }
     
     func backScreen(){
         path.removeLast()
     }
+    //Clear the stack when auth changes based on
     
-    func moveToRootScreen(){
+    func reset(){
         path.removeLast(path.count)
-    }
-    // MARK: - Login Succes
-
-    func loginSuccess() {
-        path.removeLast(path.count)   // clear auth flow
-        path.append(AppRoute.completeProfile)  // go to profile
-    }
-    
-    func logout(){
-        path.removeLast(path.count)
-    }
-    
-    func pushApp(destination:AppRoute){
-        path.append(destination)
     }
 }

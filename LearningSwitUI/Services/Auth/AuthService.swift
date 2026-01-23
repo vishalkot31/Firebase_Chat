@@ -40,26 +40,53 @@ final class FireBaseAuthService:AuthServiceProtocol{
     }
     
     //Login time
-    func login(email: String,password: String,completion: @escaping (Result<UserModel, any Error>) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password){result,error in
-            if let error = error{
+    func login(email: String, password: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
+        // Sign in with Firebase Auth
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            // Handle authentication error
+            if let error = error {
                 completion(.failure(error))
+                return
             }
-            else if let user = result?.user{
-                //Create user model
-                let userModel = UserModel(id: user.uid,email: user.email ?? "",displayName: "User \(user.uid.prefix(5))")
-    
-                // Save user info to Firestore
-                do {
-                    try self.db.collection("users").document(user.uid).setData(from: userModel, merge: true) { error in
-                    if let error = error {
-                        completion(.failure(error))
-                    } else {
-                        completion(.success(userModel)) // Return UserModel
-                        }
-                    }
-                } catch {
+            
+            // Ensure we have a valid user
+            guard let user = result?.user else {
+                let error = NSError(
+                    domain: "AuthError",
+                    code: -1,
+                    userInfo: [NSLocalizedDescriptionKey: "Authentication succeeded but user object is nil"]
+                )
+                completion(.failure(error))
+                return
+            }
+            
+            // Fetch user data from Firestore
+            self.db.collection("users").document(user.uid).getDocument { documentSnapshot, error in
+                // Handle Firestore fetch error
+                if let error = error {
                     completion(.failure(error))
+                    return
+                }
+                
+                // Ensure document exists
+                guard let document = documentSnapshot, document.exists else {
+                    let error = NSError(
+                        domain: "FirestoreError",
+                        code: -1,
+                        userInfo: [NSLocalizedDescriptionKey: "User data not found in Firestore"]
+                    )
+                    completion(.failure(error))
+                    return
+                }
+                
+                // Decode document on main actor
+                Task { @MainActor in
+                    do {
+                        let userModel = try document.data(as: UserModel.self)
+                        completion(.success(userModel))
+                    } catch {
+                        completion(.failure(error))
+                    }
                 }
             }
         }
@@ -71,7 +98,12 @@ final class FireBaseAuthService:AuthServiceProtocol{
         let fireBaseUser = userResult.user
         //Prepare user Model
         
-        let UserModel = UserModel(id: fireBaseUser.uid,email: fireBaseUser.email ?? "",displayName: "User \(fireBaseUser.uid.prefix(5))")
+        let UserModel = UserModel(
+            id: fireBaseUser.uid,
+            email: fireBaseUser.email ?? "",
+            displayName: "User \(fireBaseUser.uid.prefix(5))",
+            isProfileCompleted: false
+        )
         
         //Save usermodel into database
         

@@ -11,6 +11,7 @@ import UIKit
 // Use case for uploading image and then image url
 protocol UploadProfileImageUseCaseProtocol {
     func execute(image: UIImage, userId: String, completion: @escaping (Result<String, Error>) -> Void)
+    func excute(model: UserModel,completion: @escaping (Result<UserModel, any Error>) -> Void)
 }
 
 // Use case for fetching image
@@ -24,7 +25,8 @@ class ProfileImageSetupUseCase:UploadProfileImageUseCaseProtocol,FetchProfileIma
     private let storage: FirebaseImageUploadProtocol
     private let firestore: FireStoreServiceProtocol
     
-    init(storage: FirebaseImageUploadProtocol,firestore: FireStoreServiceProtocol) {
+    init(storage: FirebaseImageUploadProtocol = FirebaseUploadImage(),
+        firestore: FireStoreServiceProtocol = FirestoreService()) {
         self.storage = storage
         self.firestore = firestore
     }
@@ -45,6 +47,11 @@ class ProfileImageSetupUseCase:UploadProfileImageUseCaseProtocol,FetchProfileIma
     //Ftech the image for user id
     func execute(userId: String, completion: @escaping (String?) -> Void) {
         firestore.fetchProfileImageURL(userId: userId, completion: completion)
+    }
+    
+    func excute(model: UserModel,completion: @escaping (Result<UserModel, any Error>) -> Void
+    ) {
+        firestore.saveUserData(model: model, completion: completion)
     }
 
 }

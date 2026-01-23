@@ -34,7 +34,7 @@ final class ForGotPwdVM{
                 self.isLoading = false
                 switch completion{
                 case .finished:
-                    router.reset()
+                    router.backScreen()
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                 }

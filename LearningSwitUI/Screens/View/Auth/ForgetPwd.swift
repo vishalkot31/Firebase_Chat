@@ -38,7 +38,7 @@ struct ForgetPwd: View {
             .toolbar {
                 ToolbarItem(placement:.topBarLeading) {
                     Button("Back"){
-                        router.moveToRootScreen()
+                        router.backScreen()
                     }
                 }
             }

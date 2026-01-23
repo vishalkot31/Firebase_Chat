@@ -12,7 +12,7 @@ struct CreateAccountView: View {
     
     @State private var email = ""
     @Environment(Router.self) var router
-    
+    @Environment(UserSession.self) private var session
     @State private var viewMdoel = CreateAccountVM()
     var body: some View {
             VStack(spacing:10) {
@@ -31,7 +31,8 @@ struct CreateAccountView: View {
                     typeTextFiled: .passsowrd, image: "ShowPassord", text: $viewMdoel.password)
                 CustomButton(title: "Register", appIocn: nil) {
                     Task{
-                        await viewMdoel.register(router: router)
+                        await viewMdoel
+                            .register(userSession:session, router: router)
                     }
                    
                 }.buttonStyle(PrimaryButtonStyle())
@@ -71,7 +72,7 @@ struct CreateAccountView: View {
                     .capsuleBorder(color: .black)
                 //
                 Button("Already have a Account? Sign In"){
-                    router.moveToRootScreen()
+                    router.backScreen()
                 }.font(.title3)
                     .fontWeight(.bold)
                     .padding()

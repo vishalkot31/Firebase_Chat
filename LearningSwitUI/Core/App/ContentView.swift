@@ -13,33 +13,74 @@ import Observation
 
 struct ContentView: View {
     @AppStorage("hasSeenGetStarted") private var hasSeenGetStarted: Bool = false
+    @AppStorage("userData") private var userData: Data?
     @State private var router = Router()
-    @State private var userModel = UserSession()
+    @State private var session = UserSession()
     var body: some View {
-        NavigationStack(path:$router.path){
-            ZStack {
-                SignInView()
-                    .navigationDestination(for: AuthFlow.self) { route in
-                        destinationView(for: route)
-                    }
-                    .navigationDestination(for: AppFlow.self) { route in
-                        appDestinationView(for: route)
-                    }
-                
-                if !hasSeenGetStarted{
+            Group {
+                //Setup root View which is decide based on condition
+                if hasSeenGetStarted{
+                    //decide root view based on auth
+                    appFlow
+                }
+                else{
                     GetStartedView{
                         hasSeenGetStarted = true
-                        router.moveToRootScreen()
+                        session.logout()
                     }
                 }
-            }.animation(.easeInOut, value: hasSeenGetStarted)
-        }.environment(router)
-            .environment(userModel)
+            }.onAppear(){
+                if let data = userData,
+                   let saveduser =  try? JSONDecoder().decode(UserModel.self, from: data){
+                    session.login(saveduser)
+                }
+                else{
+                    session.restoreUserIfNeeded()
+                }
+            }
+        .environment(router)
+        .environment(session)
+            
+    }
+    
+    //Set the app flow baesd on auth
+    private var appFlow:some View{
+        NavigationStack(path:$router.path){
+            rootView
+            //Two routes
+                .navigationDestination(for: AppAuthFlow.self) { route in
+                    //Which view
+                authDestinationView(for: route)
+            }
+            .navigationDestination(for: AppRouteFlow.self) { route in
+                appDestinationView(for: route)
+            }
+        }
     }
 }
-    
+
+//Decide the app the root Flow on staring whic scrren to show
+//decideinf root view based on session flow value
+
+extension ContentView {
+
+    @ViewBuilder
+    var rootView: some View {
+        //It os based on computed property of flow retuen enum based on that view is return
+        switch session.flow {
+        case .login:
+            SignInView()
+        case .setupProfile:
+            ProfileSetupView()
+        case .main:
+            MainHomeView()
+        }
+    }
+}
+   
+//this is for auth navigation router
 @ViewBuilder
-func destinationView(for route: AuthFlow) -> some View {
+func authDestinationView(for route: AppAuthFlow) -> some View {
     switch route {
     case .createAccount:
         CreateAccountView()
@@ -49,15 +90,22 @@ func destinationView(for route: AuthFlow) -> some View {
     }
 }
 
+//this is for after login inside aspp
 @ViewBuilder
-func appDestinationView(for route: AppFlow) -> some View {
+func appDestinationView(for route: AppRouteFlow) -> some View {
     switch route {
-    case .home:
-        HomeView()
+    case .userProfile:
+        UserProfileView()
     case .UserList:
-        UserListing()
+        UserListingView()
     case .userDetail(id: let id):
         UserDetailView(userId: id)
+    case .completeProfile:
+        ProfileSetupView()
+    case .chatList:
+        ChatListView()
+    case .chatView(let otherUserID):
+        ChatView(otherUserModel: otherUserID)
     }
 }
 

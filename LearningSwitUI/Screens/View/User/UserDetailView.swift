@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct UserDetailView: View {
-    let userId:Int
+    let userId:String
     var body: some View {
         Text(" User Id Detail \(userId)")
     }
 }
 
 #Preview {
-    UserDetailView(userId: 1)
+    UserDetailView(userId: "1")
 }

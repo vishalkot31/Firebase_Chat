@@ -67,7 +67,7 @@ class ProfileSetUpVM{
                            
                        case .success(let model):
                            sesion.login(model)
-                           routr.pushApp(destination: .chatList)
+                           routr.reset()
                        case .failure(let error):
                            self.errorMessage = error.localizedDescription
                        }
@@ -93,7 +93,7 @@ class ProfileSetUpVM{
             switch result{
             case .success(let model):
                 sesion.login(model)
-                router.pushApp(destination: .chatList)
+                router.reset()
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }

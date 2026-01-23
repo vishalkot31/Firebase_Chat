@@ -9,13 +9,7 @@ import SwiftUI
 
 struct ChatListView: View {
     @State private var serachQuery:String = ""
-    @State private var chats: [ChatModel] = [
-        ChatModel(name: "Sarah Johnson",avatar: "👩‍💼",lastMessage: "That sounds great! See you then.",time: "2:30 PM",),
-        ChatModel(name: "Dev Team", avatar: "👥", lastMessage: "John: The PR is ready for review", time: "1:45 PM"),
-        ChatModel(name: "Alex Chen", avatar: "👨‍💻", lastMessage: "Thanks for the help!", time: "12:20 PM"),
-        ChatModel(name: "Marketing Squad", avatar: "📱", lastMessage: "Campaign launch next week", time: "Yesterday"),
-        ChatModel(name: "Emma Wilson", avatar: "👩‍🎨", lastMessage: "Love the new designs!", time: "Monday")]
-    
+    @State private var chats: [ChatModel] = []
     var filteredChat : [ChatModel] {
         if serachQuery.isEmpty{
             return chats
@@ -27,10 +21,14 @@ struct ChatListView: View {
     var body: some View {
         VStack {
             //SearchField
-            SerachTextField(serachText: $serachQuery)
-            List(filteredChat){chat in
-                ChatListRow(chat: chat)
-            }.listStyle(.plain)
+            if !filteredChat.isEmpty {
+                SerachTextField(serachText: $serachQuery)
+                    .padding(.horizontal)
+                List(filteredChat){chat in
+                    ChatListRow(chat: chat)
+                }.listStyle(.plain)
+            }
+           
         }
     }
 }
@@ -55,7 +53,7 @@ struct ChatListRow:View {
             }
             Spacer()
             VStack(alignment:.leading){
-                Text(chat.time)
+                Text(chat.lastTimestamp)
                     .font(.system(size: 13))
                     .foregroundColor(.gray)
             }
@@ -92,7 +90,6 @@ struct SerachTextField:View {
     @Binding var serachText:String
     
     var body: some View {
-        
         HStack {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.gray)
@@ -104,7 +101,7 @@ struct SerachTextField:View {
             if !serachText.isEmpty{
                 Button {
                     withAnimation {
-                        serachText = "" //Empty the text on tap
+                        serachText = "" //Empty the text on //tap
                     }
                 } label: {
                     Image(systemName: "xmark.circle.fill")
@@ -113,7 +110,6 @@ struct SerachTextField:View {
             }
                
         }.padding()
-        .background(Color(.systemGray6))
         .overlay {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(lineWidth: 1)

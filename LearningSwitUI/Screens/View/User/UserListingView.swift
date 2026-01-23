@@ -9,12 +9,16 @@ import SwiftUI
 
 struct UserListingView: View {
     @Environment(Router.self) private var router
-    @State private var viewModel = UserListVM()
+    @Environment(UserSession.self) private var session
+    private var viewModel = UserListVM()
     var body: some View {
-        content
+        content.onAppear{
+            print("vishal")
+        }
         .navigationTitle("UserList")
+        .navigationBarTitleDisplayMode(.inline)
             .task {
-                await viewModel.fetchUserList()
+                await viewModel.fetchUserList(session: session)
             }
     }
     
@@ -28,36 +32,36 @@ struct UserListingView: View {
                     .foregroundStyle(.red)
                 Button("Retry"){
                     Task{
-                        await viewModel.fetchUserList()
-                        }
-                    
-                    }
-                }
-            }
-            else{
-                List(viewModel.userList){
-                    user in
-                    UserRowView(user: user) {
-                        router.pushApp(destination: .userDetail(id: user.id))
+                        await viewModel.fetchUserList(session: session)
                     }
                 }
             }
         }
+        else{
+            List(viewModel.userList){
+                user in
+                UserRowView(user: user) {
+                    router.pushApp(destination: .chatView(otherUserModel:user))
+                }
+            }.listStyle(.plain)
+            
+        }
+    }
 }
 
 #Preview {
-    UserListingView().environment(Router())
+    UserListingView().environment(Router()).environment(UserSession())
 }
 
 //User Row
 struct UserRowView:View {
-    let user:UserList
+    let user:UserModel
     let onTap:()->Void
     
     var body: some View{
-        VStack(alignment: .leading,spacing: 20){
-            Text(user.name)
-                .font(.largeTitle)
+        VStack(alignment: .leading,spacing: 5){
+            Text(user.fullName)
+                .font(.title2)
             Text(user.email)
                 .font(.subheadline)
         }.onTapGesture {

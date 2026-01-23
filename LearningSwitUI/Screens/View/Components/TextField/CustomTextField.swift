@@ -21,8 +21,8 @@ struct CustomTextFiled:View {
     let placeHolder:String
     var typeTextFiled:TextFieldType = .extra
     var image = ""
-    
     var leftImage:String?
+    var isSystemImage = false
     //for binding textfield
     @Binding var text:String
     //Toggle to show passord or not
@@ -43,7 +43,13 @@ struct CustomTextFiled:View {
                 Group{
                     //Left Image
                     if let image = leftImage{
-                        AppImage(source: .asset(image),width: 20,height: 20)
+                        AppImage(
+                            source: isSystemImage ?
+                                .System(image) : 
+                                    .asset(image),
+                            width: 20,
+                            height: 20
+                        )
                     }
                     //If this is true show secure textfiled
                     if typeTextFiled == .passsowrd && !isPasswordVisible{
@@ -54,6 +60,7 @@ struct CustomTextFiled:View {
                     else{
                         TextField(placeHolder, text: $text)
                             .focused($isViewFocused)
+                            .autocorrectionDisabled(true)
                         
                     }
                     //Call right side view
