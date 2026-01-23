@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct UserListing: View {
+struct UserListingView: View {
     @Environment(Router.self) private var router
     @State private var viewModel = UserListVM()
     var body: some View {
@@ -46,7 +46,7 @@ struct UserListing: View {
 }
 
 #Preview {
-    UserListing().environment(Router())
+    UserListingView().environment(Router())
 }
 
 //User Row

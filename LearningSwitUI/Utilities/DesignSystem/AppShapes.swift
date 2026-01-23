@@ -13,6 +13,7 @@ enum AppShape{
     static let conreRadius:CGFloat = 12
 }
 
+//
 struct CapsuleBorderModifier:ViewModifier{
     var borderColor: Color = .gray
     var lineWidth: CGFloat = 1

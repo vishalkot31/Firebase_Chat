@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct UserProfileView: View {
     @Environment(UserSession.self) private var session
     @Environment(Router.self) private var router
     @State private var vm = HomeVM()
@@ -48,5 +48,5 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView().environment(Router()).environment(UserSession())
+    UserProfileView().environment(Router()).environment(UserSession())
 }
