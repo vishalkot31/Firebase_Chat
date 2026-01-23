@@ -9,7 +9,7 @@ import SwiftUI
 import Observation
 
 //Root View Conatins only one stack view
-//Checkimg
+//Checking
 
 struct ContentView: View {
     @AppStorage("hasSeenGetStarted") private var hasSeenGetStarted: Bool = false
