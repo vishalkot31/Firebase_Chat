@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 import Combine
 
-
+//Checking new  branch
 protocol ChatRepositoryProtocol {
     func fetchActiveChats(for userId: String) -> AnyPublisher<[ChatModel], Error>
 }
