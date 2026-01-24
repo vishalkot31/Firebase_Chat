@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C0B89C652F07CA9A007CC5C4"
-               BuildableName = "LearningSwitUI.app"
-               BlueprintName = "LearningSwitUI"
+               BuildableName = "Chat.app"
+               BlueprintName = "Chat"
                ReferencedContainer = "container:Chat.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -36,8 +36,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "C0C03F752F15418200AB2102"
-               BuildableName = "LearningSwitUITests.xctest"
-               BlueprintName = "LearningSwitUITests"
+               BuildableName = "ChatTests.xctest"
+               BlueprintName = "ChatTests"
                ReferencedContainer = "container:Chat.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -58,8 +58,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C0B89C652F07CA9A007CC5C4"
-            BuildableName = "LearningSwitUI.app"
-            BlueprintName = "LearningSwitUI"
+            BuildableName = "Chat.app"
+            BlueprintName = "Chat"
             ReferencedContainer = "container:Chat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -75,8 +75,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C0B89C652F07CA9A007CC5C4"
-            BuildableName = "LearningSwitUI.app"
-            BlueprintName = "LearningSwitUI"
+            BuildableName = "Chat.app"
+            BlueprintName = "Chat"
             ReferencedContainer = "container:Chat.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

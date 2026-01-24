@@ -25,8 +25,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearningSwitUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C0C03F762F15418200AB2102 /* LearningSwitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LearningSwitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0B89C662F07CA9A007CC5C4 /* Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0C03F762F15418200AB2102 /* ChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -85,8 +85,8 @@
 		C0B89C672F07CA9A007CC5C4 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */,
-				C0C03F762F15418200AB2102 /* LearningSwitUITests.xctest */,
+				C0B89C662F07CA9A007CC5C4 /* Chat.app */,
+				C0C03F762F15418200AB2102 /* ChatTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,9 +94,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C0B89C652F07CA9A007CC5C4 /* LearningSwitUI */ = {
+		C0B89C652F07CA9A007CC5C4 /* Chat */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C0B89C712F07CA9C007CC5C4 /* Build configuration list for PBXNativeTarget "LearningSwitUI" */;
+			buildConfigurationList = C0B89C712F07CA9C007CC5C4 /* Build configuration list for PBXNativeTarget "Chat" */;
 			buildPhases = (
 				C0B89C622F07CA9A007CC5C4 /* Sources */,
 				C0B89C632F07CA9A007CC5C4 /* Frameworks */,
@@ -109,7 +109,7 @@
 			fileSystemSynchronizedGroups = (
 				C0B89C682F07CA9A007CC5C4 /* Chat */,
 			);
-			name = LearningSwitUI;
+			name = Chat;
 			packageProductDependencies = (
 				C0D327AA2F0FDF4800D77707 /* FirebaseAuth */,
 				C0D327AC2F0FDF4800D77707 /* FirebaseCore */,
@@ -117,12 +117,12 @@
 				C07678672F1CF1C000A8E0A9 /* FirebaseStorage */,
 			);
 			productName = LearningSwitUI;
-			productReference = C0B89C662F07CA9A007CC5C4 /* LearningSwitUI.app */;
+			productReference = C0B89C662F07CA9A007CC5C4 /* Chat.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C0C03F752F15418200AB2102 /* LearningSwitUITests */ = {
+		C0C03F752F15418200AB2102 /* ChatTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C0C03F7E2F15418200AB2102 /* Build configuration list for PBXNativeTarget "LearningSwitUITests" */;
+			buildConfigurationList = C0C03F7E2F15418200AB2102 /* Build configuration list for PBXNativeTarget "ChatTests" */;
 			buildPhases = (
 				C0C03F722F15418200AB2102 /* Sources */,
 				C0C03F732F15418200AB2102 /* Frameworks */,
@@ -136,12 +136,12 @@
 			fileSystemSynchronizedGroups = (
 				C0C03F772F15418200AB2102 /* ChatTests */,
 			);
-			name = LearningSwitUITests;
+			name = ChatTests;
 			packageProductDependencies = (
 				C02CFFC02F1A1E99001D8709 /* SnapshotTesting */,
 			);
 			productName = LearningSwitUITests;
-			productReference = C0C03F762F15418200AB2102 /* LearningSwitUITests.xctest */;
+			productReference = C0C03F762F15418200AB2102 /* ChatTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -181,8 +181,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C0B89C652F07CA9A007CC5C4 /* LearningSwitUI */,
-				C0C03F752F15418200AB2102 /* LearningSwitUITests */,
+				C0B89C652F07CA9A007CC5C4 /* Chat */,
+				C0C03F752F15418200AB2102 /* ChatTests */,
 			);
 		};
 /* End PBXProject section */
@@ -224,7 +224,7 @@
 /* Begin PBXTargetDependency section */
 		C0C03F7B2F15418200AB2102 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C0B89C652F07CA9A007CC5C4 /* LearningSwitUI */;
+			target = C0B89C652F07CA9A007CC5C4 /* Chat */;
 			targetProxy = C0C03F7A2F15418200AB2102 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -463,7 +463,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C0B89C712F07CA9C007CC5C4 /* Build configuration list for PBXNativeTarget "LearningSwitUI" */ = {
+		C0B89C712F07CA9C007CC5C4 /* Build configuration list for PBXNativeTarget "Chat" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0B89C722F07CA9C007CC5C4 /* Debug */,
@@ -472,7 +472,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C0C03F7E2F15418200AB2102 /* Build configuration list for PBXNativeTarget "LearningSwitUITests" */ = {
+		C0C03F7E2F15418200AB2102 /* Build configuration list for PBXNativeTarget "ChatTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C0C03F7C2F15418200AB2102 /* Debug */,
