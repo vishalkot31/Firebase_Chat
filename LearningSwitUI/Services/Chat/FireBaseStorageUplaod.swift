@@ -75,7 +75,10 @@ final class FirestoreService:FireStoreServiceProtocol {
     func saveUserData(model: UserModel,completion: @escaping (Result<UserModel, any Error>)->Void) {
         // Save user info to Firestore
         do {
-            try self.db.collection("users").document(model.id).setData(from: model, merge: true) { error in
+            try self.db
+                .collection("users")
+                .document(model.id ?? "")
+                .setData(from: model, merge: true) { error in
             if let error = error {
                 completion(.failure(error))
             } else {

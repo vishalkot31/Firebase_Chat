@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 //This conatain all details of chat between users
 struct ChatModel:Identifiable,Decodable{
-    let id = UUID()
+    @DocumentID var id: String?
     let name: String
     var participants:[String]
     let avatar: String
@@ -20,7 +21,7 @@ struct ChatModel:Identifiable,Decodable{
 
 //It contain induvidual chat message
 struct MessageModel: Identifiable,Codable{
-    let id = UUID()
+    @DocumentID var id: String?
     let message: String
     let timestamp: Date
     let senderID:String

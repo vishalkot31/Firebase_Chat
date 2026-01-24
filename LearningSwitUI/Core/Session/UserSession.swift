@@ -10,6 +10,13 @@ import Observation
 import FirebaseAuth
 import FirebaseFirestore
 
+
+enum AuthState{
+    case loading
+    case loggedOut
+    case loggedIn
+}
+
 //UserSession is your single source of truth for user/auth stateor global state
 enum AppRootFlow {
    // case launching
@@ -21,6 +28,10 @@ enum AppRootFlow {
 //User App Sate decide the root view
 @Observable
 final class UserSession{
+    //Auth State is decided
+    var authState: AuthState = .loading
+    
+    //whenever model is updated save to userdefaults
     private(set) var user:UserModel?{
         didSet{
             saveUserToDefaults()
@@ -31,6 +42,10 @@ final class UserSession{
         loadUserFromDefaults()
     }
     
+    var myUserID: String {
+        user?.id ?? ""
+    }
+    //Save to dfaults
     private func saveUserToDefaults() {
           guard let user else {
               UserDefaults.standard.removeObject(forKey: "currentUser")
@@ -40,7 +55,7 @@ final class UserSession{
               UserDefaults.standard.set(data, forKey: "currentUser")
           }
       }
-
+        //Save to user defaults
       private func loadUserFromDefaults() {
           guard let data = UserDefaults.standard.data(forKey: "currentUser"),
                 let savedUser = try? JSONDecoder().decode(UserModel.self, from: data) else {
@@ -49,10 +64,6 @@ final class UserSession{
           }
           user = savedUser
       }
-    
-    var myUserID: String {
-        user?.id ?? ""
-    }
     
     var isLoggedIn: Bool {
         user != nil
@@ -77,22 +88,30 @@ final class UserSession{
     }
     
     // Restore user if already logged in
-    func restoreUserIfNeeded() {
-        
-        guard let firebaseUser = Auth.auth().currentUser else { return }
-
+    //First get the current user data beacuse it is based on user value only
+    func restoreUserIfNeeded()async {
         let db = Firestore.firestore()
-        db.collection("users").document(firebaseUser.uid).getDocument { snapshot, error in
-            guard let snapshot, snapshot.exists else { return }
+        guard let firebaseUser = Auth.auth().currentUser else { return }
+        
+        do {
+            // Await Firestore document fetch and decode directly into UserModel
+            let documentSnapshot = try await db.collection("users")
+                                               .document(firebaseUser.uid)
+                                               .getDocument()
+            
+            // Check if document exists
+            guard documentSnapshot.exists else { return }
+            
+            // Decode the document into UserModel
+            let userModel = try documentSnapshot.data(as: UserModel.self)
 
-            Task { @MainActor in
-                do {
-                    let userModel = try snapshot.data(as: UserModel.self)
+            // Update on main thread for SwiftUI
+            await MainActor.run {
                     self.user = userModel
-                } catch {
-                    print("Failed to decode user:", error)
                 }
-               }
-           }
+            }
+            catch {
+                print("Failed to restore user:", error)
+            }
        }
 }

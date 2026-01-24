@@ -41,6 +41,7 @@ struct UserListingView: View {
             List(viewModel.userList){
                 user in
                 UserRowView(user: user) {
+                    //on tap
                     router.pushApp(destination: .chatView(otherUserModel:user))
                 }
             }.listStyle(.plain)

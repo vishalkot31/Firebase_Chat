@@ -39,12 +39,14 @@ class ChatListUser:ChatRepositoryProtocol{
     }
 }
 
-//Fetch all users
+//Fetch all users from firebase
 
 
 protocol FetchUserListRespoitoryProtocol {
     func fetchAllUsers() async throws -> [UserModel]
 }
+
+//Returns all users from user collection
 class FetchUserListRespoitory:FetchUserListRespoitoryProtocol{
     private let db = Firestore.firestore()
     func fetchAllUsers() async throws -> [UserModel] {

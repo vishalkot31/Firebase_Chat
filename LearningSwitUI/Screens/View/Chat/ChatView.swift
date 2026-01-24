@@ -29,7 +29,6 @@ struct ChatView: View {
                         ChatBubble(chat: chat, currentUserId: session.myUserID)
                         .id(chat.id)
                         }
-                        
                    }.padding()
                     //On button tap
                 }.onChange(of: $vm.messages.count) {

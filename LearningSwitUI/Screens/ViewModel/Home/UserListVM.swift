@@ -21,11 +21,13 @@ class UserListVM{
         self.apiService = apiService
     }
     
+    //Ftech list of all users
     func fetchUserList(session:UserSession)async{
         isLoading = true
         errorMessage = nil
         do {
             let userListFteched = try await apiService.fetchAllUsers()
+            //remove self user
             userList = userListFteched.filter{$0.id != session.user?.id}
         }
         catch{

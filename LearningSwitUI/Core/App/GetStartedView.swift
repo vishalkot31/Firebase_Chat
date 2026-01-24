@@ -13,6 +13,7 @@ struct GetStartedView: View {
     var body: some View {
         GeometryReader { geo in
             ZStack {
+                //Backgorund
                 VStack {
                     Color.white.frame(height: geo.size.height * 0.30)
                     Color.black.frame(height: geo.size.height * 0.7)
@@ -27,7 +28,7 @@ struct GetStartedView: View {
                         .fontWeight(.semibold)
                         .font(.system(size: 34))
                     
-                    Text("Explore thje world of analyzing vodeos nad new whwr mmhmjmjhm , ,j,j,,j,jk,j,jk,j,")
+                    Text("I am building real chat application for learning")
                         .fontWeight(.regular)
                         .font(.system(size: 24))
                         .lineLimit(4)
