@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.LearningSwitUI</string>
+	<string>com.Chat</string>
 	<key>PROJECT_ID</key>
 	<string>vishalswiftui</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:923919388136:ios:ade33c26fe12e70e88285d</string>
+	<string>1:923919388136:ios:d858ed16f039cef788285d</string>
 </dict>
 </plist>

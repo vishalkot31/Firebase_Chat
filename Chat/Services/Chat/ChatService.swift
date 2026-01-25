@@ -20,8 +20,8 @@ class ChatService{
                 //create messsage modewl
             let message = MessageModel(
                 message: text,
-                timestamp: Date(),
-                senderID: senderId, receiverId: receiverID)
+                timestamp: Timestamp(date: Date()),
+                senderID: senderId)
             
             do {
                 try self.db.collection("chats")
@@ -35,9 +35,7 @@ class ChatService{
                     .document(chatId)
                     .setData(["participants": [senderId,receiverID],
                             "lastMessage": text,
-                            "lastTimestamp": Date(),
-                            "senderID":senderId,
-                            "receiverId": receiverID], merge: true)
+                            "lastTimestampe": Date()],merge: true)
                     promise(.success(()))
             }
             catch{
@@ -47,7 +45,7 @@ class ChatService{
         }.eraseToAnyPublisher()
     }
     
-    
+     
     //Listen to message that recived and return all messages based on chatid
     
     func listenToMessage(chatId:String) -> AnyPublisher<[MessageModel], Error> {

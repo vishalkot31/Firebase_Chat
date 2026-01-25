@@ -136,23 +136,23 @@ final class FireBaseAuthService:AuthServiceProtocol{
 }
 
 
-protocol APIServiceProtocol{
-    func ftechUsers() async throws->[UserList]
-}
-
-
-class ApiService:APIServiceProtocol{
-    func ftechUsers() async throws -> [UserList] {
-        guard let url = URL(
-            string: "https://jsonplaceholder.typicode.com/users") else{
-            throw URLError(.badURL)
-            }
-       let (data,response) = try await URLSession.shared.data(from: url)
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else{
-            throw URLError(.badServerResponse)
-        }
-        
-        return try JSONDecoder().decode([UserList].self, from: data)
-    }
-}
+//protocol APIServiceProtocol{
+//    func ftechUsers() async throws->[UserList]
+//}
+//
+//
+//class ApiService:APIServiceProtocol{
+//    func ftechUsers() async throws -> [UserList] {
+//        guard let url = URL(
+//            string: "https://jsonplaceholder.typicode.com/users") else{
+//            throw URLError(.badURL)
+//            }
+//       let (data,response) = try await URLSession.shared.data(from: url)
+//        guard let httpResponse = response as? HTTPURLResponse,
+//              httpResponse.statusCode == 200 else{
+//            throw URLError(.badServerResponse)
+//        }
+//        
+//        return try JSONDecoder().decode([UserList].self, from: data)
+//    }
+//}

@@ -42,7 +42,8 @@ struct UserListingView: View {
                 user in
                 UserRowView(user: user) {
                     //on tap
-                    router.pushApp(destination: .chatView(otherUserModel:user))
+                    router
+                    .pushApp(destination:.chatView(id: user.id, otherName: user.fullName))
                 }
             }.listStyle(.plain)
             

@@ -117,14 +117,14 @@ func appDestinationView(for route: AppRouteFlow) -> some View {
         UserProfileView()
     case .UserList:
         UserListingView()
-    case .userDetail(id: let id):
+    case .userDetail(let id):
         UserDetailView(userId: id)
     case .completeProfile:
         ProfileSetupView()
     case .chatList:
         ChatListView()
-    case .chatView(let otherUserID):
-        ChatView(otherUserModel: otherUserID)
+    case .chatView(let id,let otherName):
+        ChatView(otherId: id, otherName: otherName)
     }
 }
 

@@ -24,7 +24,7 @@ enum AppRouteFlow: Hashable {
     case userDetail(id:String)
     case completeProfile
     case chatList
-    case chatView(otherUserModel:UserModel)
+    case chatView(id:String,otherName:String)
 }
 
 @Observable

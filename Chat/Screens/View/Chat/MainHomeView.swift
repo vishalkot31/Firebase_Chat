@@ -13,13 +13,12 @@ struct MainHomeView: View {
     var body: some View {
             VStack(spacing: 20) {
                 // Welcome header
-                Text("Welcome, \(session.user?.email ?? "User")")
+                Text("Welcome  \(session.user?.fullName ?? "User")")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
 
                 // Active Chats
-                
                 ChatListView()
                 Spacer()
                 // Start New Chat button

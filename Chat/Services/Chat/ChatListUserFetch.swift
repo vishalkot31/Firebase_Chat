@@ -11,29 +11,51 @@ import Combine
 
 //Checking new  branch
 protocol ChatRepositoryProtocol {
-    func fetchActiveChats(for userId: String) -> AnyPublisher<[ChatModel], Error>
+    func fetchChatsListUser(for currentUserId: String) -> AnyPublisher<[(chat: ChatModel, otherUserName: String)], Error>
 }
 
 class ChatListUser:ChatRepositoryProtocol{
      private let db = Firestore.firestore()
     //Fetch active chats between user
-    func fetchActiveChats(for userId: String) -> AnyPublisher<[ChatModel], Error> {
-        
-        Future<[ChatModel], Error> { promise in
-            self.db.collection("chats")
-                .whereField("participants", arrayContains: userId)
-                .order(by: "timestamp", descending: true)
-                .getDocuments { snapshot, error in
-                    if let error = error {
-                        promise(.failure(error))
-                        return
-                    }
-                    let chats: [ChatModel] = snapshot?.documents.compactMap { doc in
-                        try? doc.data(as: ChatModel.self)
-                    } ?? []
-                    
-                    promise(.success(chats))
+    func fetchChatsListUser(for currentUserId: String) -> AnyPublisher<[(chat: ChatModel, otherUserName: String)], Error> {
+        Future { promise in
+            //find all chat with current user id
+            let chatsRef = self.db.collection("chats")
+                .whereField("participants", arrayContains: currentUserId)
+                .order(by: "lastTimestampe", descending: true)
+            
+            chatsRef.getDocuments { snapshot, error in
+                if let error = error {
+                    promise(.failure(error))
+                    return
                 }
+                
+                let chatDocs = snapshot?.documents ?? []
+                var result: [(chat: ChatModel, otherUserName: String)] = []
+                let group = DispatchGroup()
+                
+                //from each chat het other user id and from that fetch user collllection to get name
+                for doc in chatDocs {
+                    guard let chat = try? doc.data(as: ChatModel.self),
+                          let otherId = chat.otherUserId(currentUserId: currentUserId), !otherId.isEmpty  else { continue }
+                    print(otherId)
+                    print(chat.lastMessage)
+                    group.enter()
+                    
+                    // Fetch other user's name from 'users' collection
+                    self.db.collection("users")
+                        .document(otherId)
+                        .getDocument { userSnap, _ in
+                            let name = userSnap?["fullName"] as? String ?? "Unknown"
+                            result.append((chat: chat, otherUserName: name))
+                            group.leave()
+                        }
+                }
+                
+                group.notify(queue: .main) {
+                    promise(.success(result))
+                }
+            }
         }
         .eraseToAnyPublisher()
     }

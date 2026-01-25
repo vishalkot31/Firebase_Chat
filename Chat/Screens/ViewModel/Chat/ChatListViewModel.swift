@@ -12,29 +12,48 @@ import Combine
 @Observable
 @MainActor
 class ChatListViewModel{
-    var activeChats: [ChatModel] = []
+    
+    var userChatsList:[ChatListModel] = []
     var isLoading: Bool = false
     var errorMessage: String?
-
+    var serachQuery:String = ""
     private let chatService : ChatRepositoryProtocol
     private var cancellables = Set<AnyCancellable>()
-    private let currentUserId: String
     
-    init(chatService: ChatRepositoryProtocol = ChatListUser(),currentUserId: String) {
+    init(chatService: ChatRepositoryProtocol = ChatListUser()) {
         self.chatService = chatService
-        self.currentUserId = currentUserId
 
     }
 
-    func fetchChats() {
-        chatService.fetchActiveChats(for: currentUserId)
-             //.receive(on: DispatchQueue.main)
+    var filteredChats: [(ChatListModel)]{
+        guard !serachQuery.isEmpty else {
+            return userChatsList
+        }
+        return userChatsList.filter {
+            $0.otherUserName.localizedStandardContains(serachQuery)
+        }
+    }
+    
+    func fetchListChats(userId:String) {
+        isLoading = true
+        chatService.fetchChatsListUser(for: userId)
+             .receive(on: DispatchQueue.main)
              .sink { completion in
                  if case let .failure(error) = completion {
                      self.errorMessage = error.localizedDescription
                  }
+                 self.isLoading = false
              } receiveValue: { chats in
-                 self.activeChats = chats
+                 // Convert tuples to ChatListModel
+                 self.userChatsList = chats.compactMap { tuple in
+                    guard let chatId = tuple.chat.id else { return nil }
+                        return ChatListModel(
+                            id: chatId,
+                            chat: tuple.chat,
+                            otherUserName: tuple.otherUserName
+                        )
+                    }
+                 self.isLoading = false
              }
              .store(in: &cancellables)
      }

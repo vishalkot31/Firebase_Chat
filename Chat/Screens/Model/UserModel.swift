@@ -19,9 +19,3 @@ struct UserModel:Codable,Identifiable,Hashable{
     var fullName = ""
 }
 
-
-struct UserList:Codable,Identifiable{
-    let id:Int
-    let name:String
-    let email:String
-}

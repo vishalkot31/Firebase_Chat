@@ -11,21 +11,20 @@ import Firebase
 import Combine
 
 @Observable
-class ChatViewModel{
+class ChatViewModel:ObservableObject{
     
-   var messages: [MessageModel] = []
-   var txtMsg:String = ""
+    var messages: [MessageModel] = []
+    var txtMsg:String = ""
     private let chatService = ChatService()
     private var cancellables = Set<AnyCancellable>()
     
     private(set) var myUserId: String?
-    let otherUser: UserModel
+    let otherUserId:String
     
-    //for passing userid
-    init(otherUser: UserModel) {
-        self.otherUser = otherUser
+    
+    init(otherId:String){
+        otherUserId = otherId
     }
-    
     //Call only view appear and start listening
     func injectMyUserID(_ id: String) {
          guard myUserId == nil else { return }
@@ -36,8 +35,10 @@ class ChatViewModel{
     //Create chat id to identify chat between two users
     var chatId: String {
         guard let myUserId else { return "" }
-        return [myUserId, otherUser.id ?? ""].sorted().joined(separator: "_")
+        return [myUserId, otherUserId].sorted()
+            .joined(separator: "_")
     }
+    
     //Single mesage send
     func sendMessage(){
        let text = txtMsg.trimmingCharacters(in: .whitespaces)
@@ -45,9 +46,8 @@ class ChatViewModel{
        txtMsg = ""
         chatService.sendMessage(
                 chatId: chatId,
-                senderId: myUserId ?? "", receiverID: otherUser.id ?? "",
-                text: text
-            )
+                senderId: myUserId ?? "", receiverID: otherUserId,
+                text: text)
            .sink { completion in
                if case let .failure(error) = completion {
                     print("Send failed:", error)

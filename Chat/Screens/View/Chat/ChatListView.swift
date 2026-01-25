@@ -6,57 +6,70 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 struct ChatListView: View {
-    @State private var serachQuery:String = ""
-    @State private var chats: [ChatModel] = []
-    var filteredChat : [ChatModel] {
-        if serachQuery.isEmpty{
-            return chats
-        }
-        return chats
-        .filter{$0.name.localizedCaseInsensitiveContains(serachQuery)}
-    }
+    
+    @Bindable var viewModel = ChatListViewModel()
+    @Environment(UserSession.self) private var session
+    @Environment(Router.self) private var router
     
     var body: some View {
         VStack {
             //SearchField
-            if !filteredChat.isEmpty {
-                SerachTextField(serachText: $serachQuery)
-                    .padding(.horizontal)
-                List(filteredChat){chat in
-                    ChatListRow(chat: chat)
-                }.listStyle(.plain)
+            SerachTextField(serachText: $viewModel.serachQuery)
+                .padding(.horizontal)
+            if viewModel.isLoading {
+                ProgressView("Fecthing please wait")
             }
-           
+            else {
+                if !viewModel.filteredChats.isEmpty {
+                    List(viewModel.filteredChats){chat in
+                        ChatListRow(chat: chat){
+                            router.pushApp(destination:
+                                .chatView(
+                                id: chat.chat.otherUserId(
+                                currentUserId: session.myUserID) ?? "",
+                                otherName: chat.otherUserName
+                            )
+                        )
+                    }
+                }.listStyle(.plain)
+                }
+            }
+        }.onAppear {
+            viewModel.fetchListChats(userId: session.myUserID)
         }
     }
 }
 
 
 #Preview {
-    ChatListView()
+    ChatListView().environment(UserSession()).environment(Router())
 }
 
 //ChatList Row
 struct ChatListRow:View {
-    let chat : ChatModel
+    let chat : ChatListModel
+    var tap:()->Void?
     var body: some View {
         HStack(alignment:.top,spacing:12){
-            CircularProfileImage(imageName: chat.avatar,size: 56)
+           // CircularProfileImage(imageName: chat.avatar,size: 56)
             VStack(alignment:.leading){
-                Text(chat.name)
+                Text(chat.otherUserName)
                     .font(.system(size: 16,weight: .semibold))
                 Spacer()
-                Text(chat.lastMessage)
+                Text(chat.chat.lastMessage)
                     .font(.system(size: 14,weight: .medium))
             }
             Spacer()
             VStack(alignment:.leading){
-                Text(chat.lastTimestamp)
+                Text(chat.chat.lastTimestampe.dateValue(),style: .time)
                     .font(.system(size: 13))
                     .foregroundColor(.gray)
             }
+        }.onTapGesture {
+            tap()
         }
     }
 }

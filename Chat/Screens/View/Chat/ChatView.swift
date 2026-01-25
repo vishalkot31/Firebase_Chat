@@ -6,21 +6,27 @@
 //
 
 import SwiftUI
+import FirebaseCore
 
 struct ChatView: View {
-    let otherUserModel: UserModel
     
     @Environment(Router.self) private var router
     @Environment(UserSession.self) private var session
-    @State private var vm: ChatViewModel 
     
-    // Custom init
-    init(otherUserModel: UserModel) {
-        self.otherUserModel = otherUserModel
-        
-        // Initialize ViewModel here
-        _vm = State(initialValue: ChatViewModel(otherUser: otherUserModel))
+    @StateObject private var vm: ChatViewModel
+    
+    ///Pass this to information
+    let otherUserId:String
+    var otherUserName:String
+    
+    //Intalizing view need sto pass values 
+    init(otherId: String,otherName:String) {
+        self.otherUserId = otherId
+        self.otherUserName = otherName
+        _vm = StateObject(wrappedValue:ChatViewModel(otherId: otherId))
     }
+   
+   
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView{
@@ -45,10 +51,9 @@ struct ChatView: View {
                     .background(.ultraThinMaterial)
                 }
         }.onAppear{
-            //Start listening for incoming message
             vm.injectMyUserID(session.myUserID)
         }
-            .navigationTitle(otherUserModel.fullName)
+        .navigationTitle(otherUserName)
             .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -87,7 +92,7 @@ struct ChatView: View {
                     }
                     VStack(alignment:.leading,spacing: 5) {
                         Text(chat.message)
-                        Text(chat.timestamp.chatTimeOnly())
+                        Text(chat.timestamp.dateValue(),style: .time)
                             .font(.caption2)
                     }
                     .padding(8)
@@ -108,31 +113,24 @@ struct ChatView: View {
     }
 }
 
-#Preview {
-    let session = UserSession()  // create a session instance for preview
-    
-    ChatView(
-        otherUserModel: UserModel(
-            id: "preview_user_2",
-            email: "preview@test.com",
-            displayName: "PreviewUser",
-            profileImageURL: nil,
-            createdAt: Date(),
-            isProfileCompleted: true,
-            bio: "This is a preview bio",
-            fullName: "Preview User"
-        ),
-        // pass session
-    )
-    .environment(Router())
-    .environment(session)
-}
+//#Preview {
+//    let session = UserSession()  // create a session instance for preview
+//    
+//    ChatView(
+//        otherUserModel: UserModel(
+//            id: "preview_user_2",
+//            email: "preview@test.com",
+//            displayName: "PreviewUser",
+//            profileImageURL: nil,
+//            createdAt: Date(),
+//            isProfileCompleted: true,
+//            bio: "This is a preview bio",
+//            fullName: "Preview User"
+//        ),
+//        // pass session
+//    )
+//    .environment(Router())
+//    .environment(session)
+//}
 
-extension Date {
-    func chatTimeOnly() -> String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short   // shows only time
-        formatter.dateStyle = .none
-        return formatter.string(from: self)
-    }
-}
+
