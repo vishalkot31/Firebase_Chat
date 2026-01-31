@@ -21,9 +21,9 @@ class ProfileSetUpVM{
   var selectedImage: UIImage?
     
   var errorMessage: String?
-    var isvalidToGo:Bool {
-        return selectedImage != nil && !fullName.isEmpty
-    }
+  var isvalidToGo:Bool {
+       return selectedImage != nil && !fullName.isEmpty
+   }
     
     private let fetchUseCase: FetchProfileImageUseCaseProtocol
     private let uploadUseCase: UploadProfileImageUseCaseProtocol
@@ -37,66 +37,46 @@ class ProfileSetUpVM{
     
     //Downlaod profielimage url
     func loadProfile(id:String) {
-        fetchUseCase.execute(userId: id) { [weak self] url in
+        fetchUseCase.executeFetchImage(userId: id) { [weak self] url in
                self?.profileImageURL = url
            }
        }
     
     
-    //Upload image and get profile image url
-    func uploadImageModelSubmit(routr:Router,sesion:UserSession) {
+    //Upload image and get profile image url to show back
+    func uploadImageModelSubmit(routr:Router,sesion:UserSession) async {
         guard let image = selectedImage else { return }
-        var userID = sesion.user?.id ?? ""
-        uploadUseCase
-            .execute(image: image, userId: userID) { [weak self] result in
-                guard let self else { return }
-               switch result {
-               case .success(let url):
+        
+        uploadUseCase.executeUploadImage(image: image, session: sesion) { [weak self] result in
+            guard let self else { return }
+            //After Image is loaded profile image url is return
+            Task{@MainActor in
+                switch result {
+                case .success(let url):
                    self.profileImageURL = url
-                   //Create Model
-                   
-                   let  user = UserModel(
-                    id: userID,
-                    email: sesion.user?.email ?? "",
-                    displayName: sesion.user?.displayName ?? "",
-                    isProfileCompleted: true,
-                    bio:self.bio, fullName: self.fullName)
-                   //Update databse too
-                   uploadUseCase.excute(model: user) { result in
-                       switch result{
-                           
-                       case .success(let model):
-                           sesion.login(model)
-                           routr.reset()
-                       case .failure(let error):
-                           self.errorMessage = error.localizedDescription
-                       }
-                   }
-                  
                case .failure(let error):
                    self.errorMessage = error.localizedDescription
                }
-           }
-       }
-    //Save data without image
-    
-    func saveData(router:Router,sesion:UserSession){
-        let userID = sesion.user?.id ?? ""
-        let  user = UserModel(
-         id: userID,
-         email: sesion.user?.email ?? "",
-         displayName: sesion.user?.displayName ?? "",
-         isProfileCompleted: true,
-         bio:self.bio, fullName: self.fullName)
-        
-        uploadUseCase.excute(model: user) { result in
-            switch result{
-            case .success(let model):
-                sesion.login(model)
-                router.reset()
-            case .failure(let error):
-                self.errorMessage = error.localizedDescription
             }
+        }
+    }
+    
+    //Save data without image
+    func saveDataToFirebase(router:Router,sesion:UserSession) async{
+        let userID = sesion.user?.id ?? ""
+        let  userModel = UserModel(id: userID,
+                         email: sesion.user?.email ?? "",
+                         displayName: sesion.user?.displayName ?? "",
+                         isProfileCompleted: true,
+                         bio:self.bio, fullName: self.fullName)
+        
+        do {
+            let returned_Model = try await uploadUseCase.excuteSaveModel(model: userModel)
+            router.reset()
+            sesion.login(returned_Model)
+        }
+        catch{
+            errorMessage = error.localizedDescription
         }
         
     }

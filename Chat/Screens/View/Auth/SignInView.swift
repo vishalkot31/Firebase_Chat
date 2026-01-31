@@ -8,14 +8,16 @@
 import SwiftUI
 
 struct SignInView: View {
-    @State private var email = ""
-    @State private var pwd = ""
+//    @State private var email = ""
+//    @State private var pwd = ""
+    @State private var showErrorAlert = false
     
     @Environment(Router.self) private var router
     @Environment(UserSession.self) private var session
     
     @State private var viewModel = AuthViewModel()
     var body: some View {
+        ZStack {
             ScrollView {
                 VStack(spacing:10) {
                     AppImage(source:.asset("AppLogo"),width: 150)
@@ -44,20 +46,16 @@ struct SignInView: View {
                     }
                     CustomButton(title: "Login", appIocn: nil) {
                         //Login Logic
-                        viewModel.login(router: router, session: session)
+                        Task{
+                            await viewModel
+                                .login(router: router, session: session)
+                        }
+                       
                         
                     }
                     .buttonStyle(PrimaryButtonStyle())
                     .disabled(!viewModel.isFormvalid)
                     .opacity(viewModel.isFormvalid ? 1 : 0.5)
-                    
-                    if viewModel.isLoading {
-                        ProgressView()
-                    }
-                    if let error = viewModel.errorMessage {
-                        Text(error)
-                        .foregroundStyle(.red)
-                    }
                     
                     onDivide(text: "Or")
                     
@@ -78,11 +76,11 @@ struct SignInView: View {
                     .capsuleBorder(color: .black)
                     
                     CustomButton(title: "Continue with Facebook",appIocn: "Fb", type : false){
-                            //Action
-                        }
-                        .frame(maxWidth: .infinity)
-                        .foregroundStyle(.black)
-                        .capsuleBorder(color: .black)
+                        //Action
+                    }
+                    .frame(maxWidth: .infinity)
+                    .foregroundStyle(.black)
+                    .capsuleBorder(color: .black)
                     
                     Button("Create a Account"){
                         router.push(destination: .createAccount)
@@ -90,10 +88,42 @@ struct SignInView: View {
                         .fontWeight(.bold)
                         .padding()
                         .foregroundStyle(Color.gray)
-                
+                    
                 }
                 .padding(.horizontal,20)
             }.navigationBarBackButtonHidden()
+            //Show progress view
+            if viewModel.isLoading {
+                ProgressView("Authenticating")
+                    .padding()
+                    .background(.gray)
+                    .cornerRadius(10)
+            }
+            // ❗ Custom Alert Overlay
+            if viewModel.showError {
+                  Color.black.opacity(0.4)
+                      .ignoresSafeArea()
+
+                  VStack(spacing: 16) {
+                      Text("Error")
+                          .font(.headline)
+
+                      Text(viewModel.errorMessage ?? "")
+                          .multilineTextAlignment(.center)
+
+                      Button("OK") {
+                          viewModel.showError = false
+                      }
+                      .buttonStyle(.borderedProminent)
+                  }
+                  .padding()
+                  .frame(maxWidth: 300)
+                  .background(.white)
+                  .cornerRadius(14)
+                  .shadow(radius: 10)
+              }
+            
+        }
     }
 }
 

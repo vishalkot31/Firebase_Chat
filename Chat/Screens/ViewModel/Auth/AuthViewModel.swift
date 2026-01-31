@@ -15,6 +15,7 @@ final class AuthViewModel{
     var password:String = ""
     var isLoading = false
     var errorMessage:String?
+    var showError = false
     
     var isFormvalid:Bool{
         ValidationUtils.isValidEmail(email) && !password.isEmpty
@@ -28,21 +29,22 @@ final class AuthViewModel{
     
     //User Login
     @MainActor
-    func login(router:Router,session:UserSession){
+    func login(router:Router,session:UserSession) async {
         isLoading = true
         errorMessage = nil
-        authService.login(email: email, password: password) { [weak self] result in
-                DispatchQueue.main.async{
-                    self?.isLoading = false
-                    switch result{
-                    case .success(let model):
-                        session.login(model)
-                        router.reset()
-                    case .failure(let error):
-                        self?.errorMessage = error.localizedDescription
-                    }
-                }
-            }
+        defer {
+            isLoading = false
+        }
+        
+        do {
+            let model = try await authService.login(email: email, password: password)
+            session.login(model)
+        }
+        catch (let failure) {
+            self.showError = true
+            self.errorMessage = failure.localizedDescription
+        }
+        
     }
     
 }

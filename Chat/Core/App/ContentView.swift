@@ -20,7 +20,7 @@ struct ContentView: View {
     
     var body: some View {
             Group {
-                // First-time user
+                // First-time user whic has not get to started view
                 if !hasSeenGetStarted {
                     GetStartedView{
                         hasSeenGetStarted = true
@@ -38,9 +38,9 @@ struct ContentView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-                else{
-                    // Main app flow after user is restored
-                    mainAppFlowView
+               else{
+                   // Main app flow after user is restored
+                   mainAppFlowView
                 }
             }
             .task {
@@ -55,7 +55,6 @@ struct ContentView: View {
                 }
                 isRestoringUser = false
             }
-            
         .environment(router)
         .environment(session)
             
@@ -66,7 +65,7 @@ struct ContentView: View {
     private var mainAppFlowView:some View{
         NavigationStack(path:$router.path){
             
-            rootViewDecider //Two routes app auth flow and caht flow
+            rootViewDecider //Two routes app auth flow and chat flow after login
                 .navigationDestination(for: AppAuthFlow.self) { route in
                     //Which view
                 authDestinationView(for: route)
@@ -78,8 +77,8 @@ struct ContentView: View {
     }
 }
 
-//Decide the app the root Flow on staring whic scrren to show
-//decideinf root view based on session flow value
+//Decide the app the root Flow on starting which scrren to show
+// This view based on session flow value
 
 extension ContentView {
 

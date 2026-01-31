@@ -28,8 +28,8 @@ final class CreateAccountVM {
         }
         do {
             let user = try await FireBaseAuthService.shared.registerAsync(email: email, password: password)
-            userSession.login(user)
             router.reset()
+            userSession.login(user)
             
         }
         catch{

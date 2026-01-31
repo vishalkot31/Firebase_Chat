@@ -53,7 +53,7 @@ class ChatListViewModel{
                             otherUserName: tuple.otherUserName
                         )
                     }
-                 self.isLoading = false
+                self.isLoading = false
              }
              .store(in: &cancellables)
      }

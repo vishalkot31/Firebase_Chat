@@ -10,106 +10,60 @@ import FirebaseAuth
 import FirebaseFirestore
 import Combine
 
+
+enum AuthServiceError: Error {
+    case invalidCredentials
+    case userNotFound
+    case decodingFailed
+}
+
+
 //Protocol oriented
 protocol AuthServiceProtocol {
     //Async and wait
-    var currentUser: User? { get }
-    func login(email: String,password: String,completion: @escaping (Result<UserModel, Error>) -> Void)
+    func login(email: String, password: String)async throws->UserModel
     func registerAsync(email: String, password: String) async throws -> UserModel
     func forgetPassordPublisher(email: String) ->AnyPublisher<Void,Error>
     func logout() throws
-    
-//    //combine Version
-//    
-//    func loginPublisher(email:String,password:String)->AnyPublisher<User,Error>
-//    func registerPublisher(email:String,password:String)->AnyPublisher<User,Error>
-//    func forgetPassordPublisher(email:String)->AnyPublisher<Void,Error>
 }
 
 
 //View Model will intratc with this class
 //Singelton class
 final class FireBaseAuthService:AuthServiceProtocol{
-    
     static let shared = FireBaseAuthService()
-    private let db = Firestore.firestore()
+    private let firestoreService = FirestoreService()
     
     private init() {}
-    var currentUser: User?{
-        Auth.auth().currentUser
-    }
     
     //Login time
-    func login(email: String, password: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
-        // Sign in with Firebase Auth
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            // Handle authentication error
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
-            // Ensure we have a valid user
-            guard let user = result?.user else {
-                let error = NSError(
-                    domain: "AuthError",
-                    code: -1,
-                    userInfo: [NSLocalizedDescriptionKey: "Authentication succeeded but user object is nil"]
-                )
-                completion(.failure(error))
-                return
-            }
-            
-            // Fetch user data from Firestore
-            self.db.collection("users").document(user.uid).getDocument { documentSnapshot, error in
-                // Handle Firestore fetch error
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-                
-                // Ensure document exists
-                guard let document = documentSnapshot, document.exists else {
-                    let error = NSError(
-                        domain: "FirestoreError",
-                        code: -1,
-                        userInfo: [NSLocalizedDescriptionKey: "User data not found in Firestore"]
-                    )
-                    completion(.failure(error))
-                    return
-                }
-                
-                // Decode document on main actor
-                Task { @MainActor in
-                    do {
-                        let userModel = try document.data(as: UserModel.self)
-                        completion(.success(userModel))
-                    } catch {
-                        completion(.failure(error))
-                    }
-                }
-            }
-        }
+    func login(email: String, password: String)async throws->UserModel{
+         // 1️⃣ Firebase Auth
+        let authResult = try await Auth.auth()
+                .signIn(withEmail: email, password: password)
+        let user = authResult.user
+        // 2️⃣ Fetch Firestore document baed user id
+        let model = try await firestoreService.getUserInfo(id: user.uid)
+        return model
     }
     
     //with try and await Register user
-    @discardableResult  func registerAsync(email: String, password: String) async throws -> UserModel {
+    @discardableResult func registerAsync(email: String, password: String) async throws -> UserModel {
+        // STEP 1: Create Firebase Auth user
         let userResult = try await Auth.auth().createUser(withEmail: email, password: password)
         let fireBaseUser = userResult.user
-        //Prepare user Model
-        
-        let UserModel = UserModel(
+        // STEP 2: Create your UserModel (domain entity)
+        let userModel = UserModel(
             id: fireBaseUser.uid,
             email: fireBaseUser.email ?? "",
             displayName: "User \(fireBaseUser.uid.prefix(5))",
             isProfileCompleted: false
         )
-        
-        //Save usermodel into database
-        
-        try await db.collection("users").document(fireBaseUser.uid).setData(from: UserModel,merge: true)
+        // STEP 3: Save to Firestore (orchestration!)
+        //Save usermodel into firestore
+        try await firestoreService.saveUserInfo(userModel)
         //return user model
-        return UserModel
+        return userModel
         
     }
 
@@ -134,6 +88,8 @@ final class FireBaseAuthService:AuthServiceProtocol{
     }
     
 }
+
+
 
 
 //protocol APIServiceProtocol{

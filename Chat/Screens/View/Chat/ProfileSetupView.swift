@@ -30,7 +30,9 @@ struct ProfileSetupView: View {
                 BioTextView(textBio: $vm.bio)
                 Spacer()
                 CustomButton(title: "Continue", appIocn: nil){
-                    vm.saveData(router: router, sesion: session)
+                    Task{
+                        await vm.saveDataToFirebase(router: router, sesion: session)
+                    }
                 }.buttonStyle(PrimaryButtonStyle())
                     .disabled(!vm.isvalidToGo)
                     .opacity(vm.isvalidToGo ? 1 : 0.5)
@@ -41,10 +43,11 @@ struct ProfileSetupView: View {
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(image: $vm.selectedImage)
             }
+        //get userprfile link
             .onAppear{
                 if let id = session.user?.id {
                     vm.loadProfile(id: id)
-                   }
+                }
             }
     }
 }
