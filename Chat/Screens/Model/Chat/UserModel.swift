@@ -19,3 +19,14 @@ struct UserModel:Codable,Identifiable,Hashable{
     var fullName = ""
 }
 
+//This User entity is used in whole app
+//Convert Codable response to Entity 
+extension UserModel{
+    init(api:SignUpAPIUserDTO){
+        self.id = "\(api.id)"
+        self.email = api.email
+        self.isProfileCompleted = api.isProfileCompleted
+        self.displayName = ""
+    }
+}
+

@@ -15,7 +15,9 @@ struct SignInView: View {
     @Environment(Router.self) private var router
     @Environment(UserSession.self) private var session
     
-    @State private var viewModel = AuthViewModel()
+    //Add dependecy
+    @State private var viewModel = AuthViewModel(
+        authService: AuthServiceFactory.makeAuthService(type: .custom))
     var body: some View {
         ZStack {
             ScrollView {
@@ -84,44 +86,14 @@ struct SignInView: View {
                     
                     Button("Create a Account"){
                         router.push(destination: .createAccount)
-                    }.font(.title3)
-                        .fontWeight(.bold)
+                    }.font(Constants.AppFonts.title)
                         .padding()
                         .foregroundStyle(Color.gray)
                     
                 }
                 .padding(.horizontal,20)
             }.navigationBarBackButtonHidden()
-            //Show progress view
-            if viewModel.isLoading {
-                ProgressView("Authenticating")
-                    .padding()
-                    .background(.gray)
-                    .cornerRadius(10)
-            }
-            // ❗ Custom Alert Overlay
-            if viewModel.showError {
-                  Color.black.opacity(0.4)
-                      .ignoresSafeArea()
-
-                  VStack(spacing: 16) {
-                      Text("Error")
-                          .font(.headline)
-
-                      Text(viewModel.errorMessage ?? "")
-                          .multilineTextAlignment(.center)
-
-                      Button("OK") {
-                          viewModel.showError = false
-                      }
-                      .buttonStyle(.borderedProminent)
-                  }
-                  .padding()
-                  .frame(maxWidth: 300)
-                  .background(.white)
-                  .cornerRadius(14)
-                  .shadow(radius: 10)
-              }
+            
             
         }
     }

@@ -11,20 +11,18 @@ import Observation
 //Root View Conatins only one stack view
 
 struct ContentView: View {
-    @AppStorage("hasSeenGetStarted") private var hasSeenGetStarted: Bool = false
-    @AppStorage("userData") private var userData: Data?
+   
     @State private var router = Router()
-    @State private var session = UserSession()
     //Untill use is restored ecuase auth is decide based on user data
+    @AppStorage("hasSeenGetStarted") private var hasSeenGetStarted: Bool = false
     @State private var isRestoringUser = true
-    
+    @Environment(UserSession.self) private var session
     var body: some View {
             Group {
                 // First-time user whic has not get to started view
                 if !hasSeenGetStarted {
                     GetStartedView{
                         hasSeenGetStarted = true
-                        session.logout()
                     }
                 }
                 else if  isRestoringUser {
@@ -44,20 +42,10 @@ struct ContentView: View {
                 }
             }
             .task {
-                // 1️⃣ Try restoring from local storage first
-                if let data = userData,
-                    let saveduser =  try? JSONDecoder().decode(UserModel.self, from: data){
-                    session.login(saveduser)
-                }
-                else{
-                    // 2️⃣ If no local data, restore asynchronously from Firestore
-                    await session.restoreUserIfNeeded()
-                }
+                try? await Task.sleep(for: .milliseconds(100))
                 isRestoringUser = false
             }
         .environment(router)
-        .environment(session)
-            
     }
     
     
@@ -128,5 +116,5 @@ func appDestinationView(for route: AppRouteFlow) -> some View {
 }
 
 #Preview {
-    ContentView()
+    ContentView().environment(Router())
 }

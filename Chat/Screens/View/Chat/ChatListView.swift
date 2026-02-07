@@ -57,10 +57,10 @@ struct ChatListRow:View {
            // CircularProfileImage(imageName: chat.avatar,size: 56)
             VStack(alignment:.leading){
                 Text(chat.otherUserName)
-                    .font(.system(size: 16,weight: .semibold))
+                    .font(Constants.AppFonts.chatUserName)
                 Spacer()
                 Text(chat.chat.lastMessage)
-                    .font(.system(size: 14,weight: .medium))
+                    .font(Constants.AppFonts.chatMessage)
             }
             Spacer()
             VStack(alignment:.leading){

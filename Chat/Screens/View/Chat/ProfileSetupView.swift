@@ -44,11 +44,11 @@ struct ProfileSetupView: View {
                 ImagePicker(image: $vm.selectedImage)
             }
         //get userprfile link
-            .onAppear{
-                if let id = session.user?.id {
-                    vm.loadProfile(id: id)
-                }
-            }
+//            .onAppear{
+//                if let id = session.user?.id {
+//                    vm.loadProfile(id: id)
+//                }
+//            }
     }
 }
 //person.circle.fill
@@ -103,7 +103,6 @@ struct ImageProfileView:View {
         }
     }
 }
-
 
 struct FloatingIconButton: View {
     let systemImage: String

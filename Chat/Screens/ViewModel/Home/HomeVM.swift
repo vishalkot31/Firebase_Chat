@@ -11,10 +11,12 @@ import Observation
 @Observable
 class HomeVM {
     var errorMessage :String?
+    
     func logout(session:UserSession,router:Router){
         do {
             try FireBaseAuthService.shared.logout()
             //User Clear
+            router.reset()
             session.logout()
         }
         catch{

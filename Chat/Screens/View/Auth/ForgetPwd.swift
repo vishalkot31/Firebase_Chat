@@ -9,17 +9,25 @@ import SwiftUI
 
 struct ForgetPwd: View {
     @State private var email = ""
-    @State private var viewModel = ForGotPwdVM()
+    @State private var viewModel = ForGotPwdVM(
+        service: AuthServiceFactory.makeAuthService(
+            type: .custom
+        )
+    )
     @Environment(Router.self) var router
     var body: some View {
             VStack{
                 CustomTextFiled(
                     textTitle: "Email",
-                    placeHolder: "Eneter Your Email",
+                    placeHolder: "Enter Your Email",
                     text: $viewModel.email)
                 CustomButton(title: "Next", appIocn: nil){
                     //Logic
-                    viewModel.foregetPassord(router: router)
+                    
+                    Task{
+                        await viewModel.forgetPassord(router: router)
+                    }
+                    
                 }.buttonStyle(PrimaryButtonStyle())
                     .disabled(!viewModel.isFormvalid)
                     .opacity(viewModel.isFormvalid ? 1 : 0.5)
@@ -34,14 +42,6 @@ struct ForgetPwd: View {
             .padding()
             .navigationTitle("Forgot Passowrd")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden()
-            .toolbar {
-                ToolbarItem(placement:.topBarLeading) {
-                    Button("Back"){
-                        router.backScreen()
-                    }
-                }
-            }
     }
 }
 

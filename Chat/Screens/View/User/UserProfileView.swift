@@ -16,35 +16,38 @@ struct UserProfileView: View {
         VStack(spacing: 20) {
                 // Profile Info
             if let user = session.user {
-                VStack(spacing: 8) {
-                    Text(user.displayName)
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Text(session.user?.email ?? "")
-                        .foregroundStyle(.secondary)
-                        }
-                    } else {
-                        ProgressView("Loading profile...")
+                VStack(alignment:.leading, spacing: 8) {
+                    Text("Contact Information")
+                        .font(Constants.AppFonts.largeTitle)
+                    VStack{
+                        Text(user.displayName)
+                            .font(Constants.AppFonts.title)
+                        Text(session.user?.email ?? "")
+                            .foregroundStyle(.secondary)
+                            .font(Constants.AppFonts.bodyMedium)
+                    }.padding(.leading)
+                    
+                    Divider()
                     }
+                }
+            else {
+                ProgressView("Loading profile...")
+                }
 
-                    Spacer()
-            Button("Next") {
-                router.pushApp(destination: .UserList)
-            }
-                    // Logout Button
-                    Button(role: .destructive) {
-                        vm.logout(session: session, router: router)
-                    } label: {
-                        Text("Logout")
-                        .frame(maxWidth: .infinity)
-                    }
+                Spacer()
+                // Logout Button action
+                Button(role: .destructive) {
+                    vm.logout(session: session, router: router)
+                } label: {
+                    Text("Logout")
+                    .frame(maxWidth: .infinity)
+                }
                     .buttonStyle(.borderedProminent)
                 }
                 .padding()
                 .navigationTitle("Profile")
-                .navigationBarBackButtonHidden(true)
+                .navigationBarBackButtonHidden(false)
             }
-    
 }
 
 #Preview {

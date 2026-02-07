@@ -23,24 +23,27 @@ final class ForGotPwdVM{
         ValidationUtils.isValidEmail(email)
     }
     
-    func foregetPassord(router:Router){
+    let service:AuthServiceProtocol
+    init(service:AuthServiceProtocol){
+        self.service = service
+    }
+    
+    func forgetPassord(router:Router)async{
         isLoading = true
         errorMessage = nil
-        FireBaseAuthService.shared.forgetPassordPublisher(email: email)
-            .sink { [weak self] completion in
-                guard let self = self else{
-                    return
-                }
-                self.isLoading = false
-                switch completion{
-                case .finished:
-                    router.backScreen()
-                case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                }
-            } receiveValue: {
-                // Nothing to handle, Void type
-            }.store(in: &cancellables)
+        defer{
+            isLoading = false
+        }
+        do {
+            try await service.forgetPassordPublisher(email: email)
+            router.backScreen()
+        }
+        catch{
+            self.errorMessage = error.localizedDescription
+        }
+       
         
     }
 }
+
+

@@ -8,6 +8,8 @@
 import Observation
 import SwiftUI
 
+
+
 @Observable
 
 final class AuthViewModel{
@@ -21,9 +23,10 @@ final class AuthViewModel{
         ValidationUtils.isValidEmail(email) && !password.isEmpty
     }
     
+    
     //Dependency injection
-    var authService:AuthServiceProtocol
-    init (authService:AuthServiceProtocol = FireBaseAuthService.shared){
+    let authService:AuthServiceProtocol
+    init (authService:AuthServiceProtocol){
         self.authService =  authService
     }
     

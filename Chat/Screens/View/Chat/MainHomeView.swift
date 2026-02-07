@@ -17,6 +17,9 @@ struct MainHomeView: View {
                     .font(.title2)
                     .fontWeight(.semibold)
                     .padding(.top)
+                    .onTapGesture {
+                        router.pushApp(destination: .userProfile)
+                    }
 
                 // Active Chats
                 ChatListView()

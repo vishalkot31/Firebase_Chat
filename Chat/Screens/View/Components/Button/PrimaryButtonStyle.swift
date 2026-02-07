@@ -11,8 +11,7 @@ import SwiftUI
 struct PrimaryButtonStyle :ButtonStyle{
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.title2)
-            .fontWeight(.bold)
+            .font(Constants.AppFonts.buttonTitle)
             .padding()
             .frame(maxWidth: .infinity)
             .foregroundStyle(.white)

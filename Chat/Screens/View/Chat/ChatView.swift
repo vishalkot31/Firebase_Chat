@@ -53,7 +53,6 @@ struct ChatView: View {
         }.onAppear{
             vm.injectMyUserID(session.myUserID)
         }
-        .navigationTitle(otherUserName)
             .navigationBarTitleDisplayMode(.inline)
     }
     
@@ -113,24 +112,12 @@ struct ChatView: View {
     }
 }
 
-//#Preview {
-//    let session = UserSession()  // create a session instance for preview
-//    
-//    ChatView(
-//        otherUserModel: UserModel(
-//            id: "preview_user_2",
-//            email: "preview@test.com",
-//            displayName: "PreviewUser",
-//            profileImageURL: nil,
-//            createdAt: Date(),
-//            isProfileCompleted: true,
-//            bio: "This is a preview bio",
-//            fullName: "Preview User"
-//        ),
-//        // pass session
-//    )
-//    .environment(Router())
-//    .environment(session)
-//}
+#Preview {
+    let session = UserSession()  // create a session instance for preview
+    
+    ChatView(otherId: "2", otherName: "Vishal")
+    .environment(Router())
+    .environment(session)
+}
 
 

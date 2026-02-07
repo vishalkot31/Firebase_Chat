@@ -35,7 +35,7 @@ struct CustomTextFiled:View {
         VStack(spacing:10){
             HStack{
                 Text(textTitle)
-                    .font(.headline)
+                    .font(Constants.AppFonts.textFielldText)
                 Spacer()
             }
             
@@ -46,9 +46,9 @@ struct CustomTextFiled:View {
                         AppImage(
                             source: isSystemImage ?
                                 .System(image) : 
-                                    .asset(image),
-                            width: 20,
-                            height: 20
+                                .asset(image),
+                                 width: 20,
+                                 height: 20
                         )
                     }
                     //If this is true show secure textfiled
@@ -77,21 +77,24 @@ struct CustomTextFiled:View {
     }
     
 
-        //To show eye button and toggle
+        //To show eye button and toggle function
     @ViewBuilder func rightSideView()->some View{
-        if typeTextFiled == .passsowrd {
+        
+        switch typeTextFiled {
+        case .email:
+            if ValidationUtils.isValidEmail(text){
+                AppImage(source: .asset("CheckMark"),width: 20,height: 20)
+            }
+        case .passsowrd:
             Button {
                 isPasswordVisible.toggle()
-                    //toggle
+                //toggle
             } label: {
                 AppImage(source: .System(isPasswordVisible ? "eye" : "eye.slash"),
-                    width: 30,height: 30)
+                         width: 30,height: 30)
             }
-        }
-        else if typeTextFiled == .email && ValidationUtils.isValidEmail(text){
-            AppImage(source: .asset("CheckMark"),width: 20,height: 20)
+        case .extra:
+            EmptyView()
         }
     }
-       
-       
 }

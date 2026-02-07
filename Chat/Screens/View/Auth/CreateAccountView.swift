@@ -13,7 +13,8 @@ struct CreateAccountView: View {
     @State private var email = ""
     @Environment(Router.self) var router
     @Environment(UserSession.self) private var session
-    @State private var viewMdoel = CreateAccountVM()
+    @State private var viewModel = CreateAccountVM(authService:AuthServiceFactory.makeAuthService(type: .custom))
+    
     var body: some View {
             VStack(spacing:10) {
                 AppImage(source:.asset("AppLogo"),width: 150)
@@ -23,28 +24,21 @@ struct CreateAccountView: View {
                 CustomTextFiled(
                     textTitle: "Email",
                     placeHolder: "Eneter Your Email",
-                    leftImage: "Email", text: $viewMdoel.email
+                    leftImage: "Email", text: $viewModel.email
                 )
                 CustomTextFiled(
                     textTitle: "Password",
                     placeHolder: "Enter Your Password",
-                    typeTextFiled: .passsowrd, image: "ShowPassord", text: $viewMdoel.password)
+                    typeTextFiled: .passsowrd, image: "ShowPassord", text: $viewModel.password)
                 CustomButton(title: "Register", appIocn: nil) {
                     Task{
-                        await viewMdoel
+                        await viewModel
                             .register(userSession:session, router: router)
                     }
                    
                 }.buttonStyle(PrimaryButtonStyle())
-                    .disabled(!viewMdoel.isFormValid)
-                    .opacity(viewMdoel.isFormValid ? 1 : 0.5)
-                if viewMdoel.isLoading {
-                    ProgressView()
-                }
-                if let error = viewMdoel.errorMessage {
-                    Text(error)
-                    .foregroundStyle(.red)
-                }
+                    .disabled(!viewModel.isFormValid)
+                    .opacity(viewModel.isFormValid ? 1 : 0.5)
                 onDivide(text: "Or")
                 
                 CustomButton(title: "Continue with Apple", appIocn: "apple.logo") {
@@ -73,16 +67,17 @@ struct CreateAccountView: View {
                 //
                 Button("Already have a Account? Sign In"){
                     router.backScreen()
-                }.font(.title3)
-                    .fontWeight(.bold)
+                }.font(Constants.AppFonts.title)
                     .padding()
                     .foregroundStyle(Color.gray)
                 
             }.padding()
-                .navigationBarBackButtonHidden()//Hide navigation //abck button
+             .navigationBarBackButtonHidden()//Hide navigation //abck button
+             .loading(viewModel.isLoading)
+             .appAlert($viewModel.alert)
     }
 }
 
 #Preview {
-    CreateAccountView().environment(Router())
+    CreateAccountView().environment(Router()).environment(UserSession())
 }
